@@ -39,6 +39,13 @@ const Register = () => {
         console.log(result);
         updateUserProfile(name, photo)
         navigate('/');
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "User Registration Successful",
+          showConfirmButton: false,
+          timer: 1500
+        });
       })
       .catch(error => {
         console.log(error.message);
@@ -97,7 +104,7 @@ const Register = () => {
                 id="password"      
                 name="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder="********"
                 className="input input-bordered w-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition duration-200 pr-12" // Adjust padding-right
                 required
               />

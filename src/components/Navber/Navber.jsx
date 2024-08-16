@@ -121,20 +121,13 @@ const Navber = () => {
               </li>
               <li>
                 <Link
-                  to="/addVolunteerPost"
+                  to="/upateProfile"
                   className="text-gray-700 hover:text-gray-900"
                 >
-                  Add Volunteer Post
+                  Update Profile
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/volunteerNdPstDtail"
-                  className="text-gray-700 hover:text-gray-900"
-                >
-                  Manage My Post
-                </Link>
-              </li>
+             
             </ul>
           </div>
         ) : (
