@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import UpdateProfile from "../components/UpdateProfile/UpdateProfile";
+import CategoryDetails from "../pages/Home/Category/CategoryDetails";
 
 
 export const router = createBrowserRouter([
@@ -26,7 +27,11 @@ export const router = createBrowserRouter([
         {
           path: "/upateProfile",
           element: <UpdateProfile />
-        }
+        },
+        {
+          path: "/categoryDetails/:categoryName",
+          element: <CategoryDetails />
+        },
     ]
   },
 ]);
