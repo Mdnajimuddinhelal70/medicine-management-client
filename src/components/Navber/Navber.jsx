@@ -30,6 +30,11 @@ const Navber = () => {
         </Link>
       </li>
       <li>
+        <Link to="/carts" className="text-gray-700 hover:text-gray-900">
+          Cart
+        </Link>
+      </li>
+      <li>
         <Link to="/login" className="text-gray-700 hover:text-gray-900">
           Sign-In
         </Link>

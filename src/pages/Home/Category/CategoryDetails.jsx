@@ -44,6 +44,7 @@ const CategoryDetails = () => {
         medicineId: medicine._id,
         email: user.email,
         name: medicine.name,
+        image: medicine.image,
         price: medicine.price,
         dosage: medicine.dosage,
       };

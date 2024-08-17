@@ -5,6 +5,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import UpdateProfile from "../components/UpdateProfile/UpdateProfile";
 import CategoryDetails from "../pages/Home/Category/CategoryDetails";
+import Carts from "../pages/Carts/Carts";
 
 
 export const router = createBrowserRouter([
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
         {
           path: "/categoryDetails/:categoryName",
           element: <CategoryDetails />
+        },
+        {
+          path: "/carts",
+          element: <Carts />
         },
     ]
   },
