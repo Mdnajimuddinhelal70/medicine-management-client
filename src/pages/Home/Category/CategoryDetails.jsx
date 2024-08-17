@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import Modal from "react-modal";
 import { FaEye } from "react-icons/fa";
 import { AuthContext } from "../../../Providers/AuthProvider";
-import axios from "axios";
 import Swal from "sweetalert2";
 import useAxiosSecure from "./../../../hooks/useAxiosSecure";
 
@@ -15,7 +14,6 @@ const CategoryDetails = () => {
   const [filteredMedicines, setFilteredMedicines] = useState([]);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [cart, setCart] = useState([]);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -52,26 +50,35 @@ const CategoryDetails = () => {
       axiosSecure
         .post("/carts", cartItem)
         .then((res) => {
-          console.log(res.data);
           if (res.data.insertedId) {
             Swal.fire({
               position: "top-end",
               icon: "success",
-              title: `${medicine.name} selected to the cart`,
+              title: `${medicine.name} added to the cart`,
               showConfirmButton: false,
               timer: 1500,
             });
           }
         })
-        .catch((error) => console.error("Error adding item to cart:", error));
+        .catch((error) => {
+          console.error("Error adding item to cart:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to add the item to the cart. Please try again.",
+          });
+        });
     } else {
-      console.log("User not logged in.");
-      // Optionally show a message to log in
+      Swal.fire({
+        icon: "warning",
+        title: "Not Logged In",
+        text: "You need to log in to add items to the cart.",
+      });
     }
   };
 
   return (
-    <div className=" container mx-auto p-4">
+    <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">
         Medicines in {categoryName} Category
       </h1>
@@ -95,8 +102,6 @@ const CategoryDetails = () => {
         <tbody className="bg-white divide-y divide-gray-200">
           {filteredMedicines.map((medicine) => (
             <tr key={medicine._id}>
-              {" "}
-              {/* Use _id for key */}
               <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900 text-xl">
                 {medicine.name}
               </td>
@@ -128,34 +133,46 @@ const CategoryDetails = () => {
       <Modal
         isOpen={showModal}
         onRequestClose={handleHideModal}
-        className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50"
+        className="fixed inset-0 flex items-center justify-center p-4"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-        contentClassName="bg-white p-6 rounded-lg w-full max-w-lg"
+        contentLabel="Medicine Details"
       >
-        <button
-          onClick={handleHideModal}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-        >
-          &times;
-        </button>
-        {selectedMedicine && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">{selectedMedicine.name}</h2>
-            <img
-              src={selectedMedicine.image}
-              alt={selectedMedicine.name}
-              className="w-full h-auto mb-4"
-            />
-            <p className="text-lg mb-2">{selectedMedicine.description}</p>
-            <p className="text-lg font-semibold">
-              Price: {selectedMedicine.price}
-            </p>
-          </div>
-        )}
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+          <button
+            onClick={handleHideModal}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            &times;
+          </button>
+          {selectedMedicine && (
+            <div>
+              <h2 className="text-2xl font-bold mb-4">
+                {selectedMedicine.name}
+              </h2>
+              <img
+                src={selectedMedicine.image}
+                alt={selectedMedicine.name}
+                className="w-full h-[150px] mb-4"
+              />
+              <p className="text-lg mb-2">{selectedMedicine.description}</p>
+              <p className="text-lg font-semibold">
+                Price: ${selectedMedicine.price}
+              </p>
+              <p className="text-lg">Dosage: {selectedMedicine.dosage}</p>
+              <p className="text-lg">Type: {selectedMedicine.type}</p>
+            </div>
+          )}
+          <button
+            onClick={handleHideModal}
+            className="btn bg-sky-500 text-white mt-4"
+          >
+            Close
+          </button>
+        </div>
       </Modal>
 
       <div className="flex justify-end p-4">
-        <button className="btn btn-ghost border-t-green-500">
+        <button className="btn btn-ghost bg-slate-400">
           <Link to="/">Back</Link>
         </button>
       </div>

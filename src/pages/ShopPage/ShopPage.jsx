@@ -81,7 +81,7 @@ const ShopPage = () => {
                 </button>
                 <button
                 onClick={() => handleSelect(medicine)}
-                className="btn btn-sm bg-green-500 text-white">
+                className="btn btn-sm bg-fuchsia-500 text-white">
                   Select
                 </button>
               </td>
