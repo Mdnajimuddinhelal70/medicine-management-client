@@ -15,9 +15,9 @@ const CategoryDetails = () => {
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const axiosSecure = useAxiosSecure();
-
+   
   useEffect(() => {
-    fetch("http://localhost:8000/medicine")
+    fetch("http://localhost:8000/myMedicine")
       .then((res) => res.json())
       .then((data) => {
         const filtered = data.filter((item) => item.category === categoryName);
@@ -41,10 +41,10 @@ const CategoryDetails = () => {
       const cartItem = {
         medicineId: medicine._id,
         email: user.email,
-        name: medicine.name,
+        company: medicine.company,
         image: medicine.image,
         price: medicine.price,
-        dosage: medicine.dosage,
+        quantity: medicine.quantity,
       };
 
       axiosSecure

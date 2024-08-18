@@ -15,7 +15,7 @@ const ShopPage = () => {
   const { data: shop = [] } = useQuery({
     queryKey: ['shop'],
     queryFn: async () => {
-      const res = await axiosSecure.get('/medicine');
+      const res = await axiosSecure.get('/myMedicine');
       return res.data;
     },
   });
@@ -30,10 +30,10 @@ const ShopPage = () => {
         const shopItem ={
           medicineId: medicine._id,
           email: user.email,
-          name: medicine.name,
+          company: medicine.company,
           image: medicine.image,
           price: medicine.price,
-          dosage: medicine.dosage,
+          quantity: medicine.quantity,
         }; 
         axiosSecure.post('/carts', shopItem)
         .then(res => {

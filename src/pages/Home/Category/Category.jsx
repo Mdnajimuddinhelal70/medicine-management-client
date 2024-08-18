@@ -5,7 +5,7 @@ const Category = () => {
   const [medicines, setMedicines] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8000/medicine')
+    fetch('http://localhost:8000/myMedicine')
       .then(res => res.json())
       .then(data => {
        
