@@ -3,21 +3,27 @@ import { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useCart from "../../hooks/useCart";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const { user } = useContext(AuthContext);
+  const [transactionId, setTransactionId] = useState('');
   const [clientSecret, setClientSecret] = useState("");
   const elements = useElements();
-  const [error, setErro] = useState("");
+  const [error, setError] = useState("");
   const axiosSecure = useAxiosSecure();
-  const [cart] = useCart();
+  const [cart, refetch] = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
 
   const totalPrice = cart.reduce((total, item) => {
     const price = parseFloat(item.price.replace("$", ""));
     const quantity = item.quantity || 1;
     return total + price * quantity;
   }, 0);
+
   useEffect(() => {
     axiosSecure
       .post("/create-payment-intent", { price: totalPrice })
@@ -35,37 +41,76 @@ const CheckoutForm = () => {
     if (!stripe || !elements) {
       return;
     }
+    setIsProcessing(true);
     const card = elements.getElement(CardElement);
     if (card === null) {
+      setIsProcessing(false);
       return;
     }
+
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
+
     if (error) {
       console.log("payment error", error);
-      setErro(error.message);
+      setError(error.message);
+      setIsProcessing(false);
+      return;
     } else {
-      console.log("payment method", paymentMethod);
-      setErro("");
+      setError("");
     }
 
-    const { paymentIntent, error: confirmError } =
-      await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            email: user?.email || "anonymous",
-            name: user?.displayName || "anonymous",
-          },
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          email: user?.email || "anonymous",
+          name: user?.displayName || "anonymous",
         },
-      });
+      },
+    });
+
     if (confirmError) {
-      console.log("confirm error");
-    } else {
-      console.log("payment intent", paymentIntent);
+      console.log("confirm error", confirmError);
+      setIsProcessing(false);
+      return;
     }
+
+    if (paymentIntent.status === 'succeeded') {
+      console.log('Transaction id', paymentIntent.id);
+      setTransactionId(paymentIntent.id);
+
+      const payment = {
+        email: user.email,
+        price: totalPrice,
+        transactionId: paymentIntent.id,
+        date: new Date(),
+        cartIds: cart.map(item => item._id),
+        myMdcnIds: cart.map(item => item.medicineId),
+        status: 'pending'
+      };
+
+      try {
+        const res = await axiosSecure.post('/payments', payment);
+        console.log('Payment saved', res.data);
+        refetch();
+        if(res.data.paymentResult.insertedId){
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Thanks, your payment successfull",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          navigate('/invoice')
+        }
+      } catch (error) {
+        console.error('Error saving payment:', error);
+      }
+    }
+    setIsProcessing(false);
   };
 
   return (
@@ -99,12 +144,13 @@ const CheckoutForm = () => {
         </div>
         <button
           type="submit"
-          disabled={!stripe || !clientSecret}
+          disabled={!stripe || !clientSecret || isProcessing}
           className="w-full py-2 px-4 bg-violet-700 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300"
         >
-          Pay Now
+          {isProcessing ? "Processing..." : "Pay Now"}
         </button>
         <p className="text-red-700">{error}</p>
+        {transactionId && <p className="text-green-600">Your transaction ID: {transactionId}</p>}
       </form>
     </div>
   );
