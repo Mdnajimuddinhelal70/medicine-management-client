@@ -7,7 +7,7 @@ import UpdateProfile from "../components/UpdateProfile/UpdateProfile";
 import CategoryDetails from "../pages/Home/Category/CategoryDetails";
 import Carts from "../pages/Carts/Carts";
 import ShopPage from "../pages/ShopPage/ShopPage";
-import CheckOut from "../pages/CheckOut/CheckOut";
+import Payment from "../pages/CheckoutForm/Payment";
 
 
 export const router = createBrowserRouter([
@@ -44,8 +44,8 @@ export const router = createBrowserRouter([
           element: <ShopPage />
         },
         {
-          path: "/checkOut",
-          element: <CheckOut />
+          path: "/payment",
+          element: <Payment />
         },
     ]
   },

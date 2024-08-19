@@ -4,16 +4,16 @@ import useCart from "../../hooks/useCart";
 import { Link } from "react-router-dom";
 
 const Carts = () => {
-  const [cart, refetch] = useCart(); 
-
+  const [cart, refetch] = useCart();
+  
   const totalPrice = cart.reduce((total, item) => {
-    const price = parseFloat(item.price.replace('$', ''));   
-    const quantity = item.quantity || 0;  
-    return total + (price * quantity); 
+    const price = parseFloat(item.price.replace('$', '')); 
+    const quantity = item.quantity || 0; 
+    return total + (price * quantity);
   }, 0);
-
-  const axiosSecure = useAxiosSecure();  
-
+  
+  const axiosSecure = useAxiosSecure();
+  
   const handleClear = (id) => {
     axiosSecure.delete(`/carts/${id}`).then((res) => {
       if (res.data.deletedCount > 0) {
@@ -24,7 +24,7 @@ const Carts = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        refetch();  
+        refetch();
       }
     });
   };
@@ -32,20 +32,15 @@ const Carts = () => {
   const handleQuantityChange = (id, quantity) => {
     axiosSecure.patch(`/carts/${id}`, { quantity }).then((res) => {
       if (res.data.modifiedCount > 0) {
-        refetch();  
+        refetch();
       }
     });
   };
 
   return (
     <>
-      <div className="h2-text-2xl">Total Price: {totalPrice}</div>
+      <div className="h2-text-2xl">Total Price: ${totalPrice.toFixed(2)}</div>
       <div className="overflow-x-auto mx-10 my-10">
-        <div className="flex justify-end m-4">
-          <button className="btn btn-outline text-xl font-bold">
-            <Link to="/checkOut">Check Out</Link>
-          </button>
-        </div>
         <table className="table">
           {/* head */}
           <thead>
@@ -77,11 +72,10 @@ const Carts = () => {
                 <td>{item.company}</td>
                 <td>
                   <div className="flex items-center gap-2">
-                    {/* Quantity Change Buttons */}
                     <button
                       onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
-                      className="btn btn-ghost btn-sm"
-                      disabled={item.quantity <= 1}  
+                      className="btn btn-ghost btn-xs"
+                      disabled={item.quantity <= 1}
                     >
                       -
                     </button>
@@ -93,7 +87,7 @@ const Carts = () => {
                     />
                     <button
                       onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
-                      className="btn btn-ghost btn-sm"
+                      className="btn btn-ghost btn-xs"
                     >
                       +
                     </button>
@@ -112,6 +106,12 @@ const Carts = () => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-end m-4">
+          {/* Checkout Button */}
+          <button className="btn btn-outline text-xl font-bold">
+            <Link to="/payment">Check Out</Link>
+          </button>
+        </div>
       </div>
     </>
   );
