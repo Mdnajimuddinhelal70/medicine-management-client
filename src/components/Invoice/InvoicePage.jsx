@@ -1,10 +1,8 @@
-
-
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { AuthContext } from "../../Providers/AuthProvider";
-import logo from "../../assets/research.png"; 
+import logo from "../../assets/research.png";
 import { FaPrint } from "react-icons/fa";
 
 const InvoicePage = () => {
@@ -24,21 +22,19 @@ const InvoicePage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg mt-10">
-     
+    <div className="max-w-3xl mx-auto p-8 shadow-lg mt-10 bg-violet-500">
       <div className="flex justify-between items-center mb-8">
         <div>
           <img src={logo} alt="Website Logo" className="h-16" />
         </div>
         <button
           onClick={handlePrint}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
+          className="flex items-center px-4 py-2 bg-pink-500 text-white font-semibold rounded-md hover:bg-pink-700 transition duration-300"
         >
           <FaPrint className="mr-2" /> Print Invoice
         </button>
       </div>
 
-     
       <div className="mb-8">
         <h2 className="text-2xl font-semibold">Invoice</h2>
         <p className="text-lg mt-2">
@@ -52,7 +48,6 @@ const InvoicePage = () => {
         </p>
       </div>
 
-     
       <div className="overflow-x-auto mb-8">
         <table className="table-auto w-full border-collapse border">
           <thead>
@@ -77,9 +72,7 @@ const InvoicePage = () => {
       </div>
 
       {/* Footer */}
-      <p className="text-center text-gray-500">
-        Thank you for your purchase!
-      </p>
+      <p className="text-center text-black bg-orange-500 py-3">Thank you for your purchase!</p>
     </div>
   );
 };
