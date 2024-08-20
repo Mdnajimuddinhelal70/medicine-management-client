@@ -2,11 +2,13 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../Providers/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Register = () => {
-  const [error, setError] = useState("")
-  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const { createUser, updateUserProfile, user } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const axiosPublic = useAxiosPublic();
 
   const navigate = useNavigate();
   const handleRegister = async (event) => {
@@ -17,9 +19,9 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    const uppercaseRegex = /[A-Z]/
-    const lowercaseRegex = /[a-z]/
-  
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters long!");
       return;
@@ -32,23 +34,35 @@ const Register = () => {
       setError("Password must contain at least one lowercase letter!");
       return;
     }
-
-    // console.log(name, email, photo, password);
+    
     createUser(email, password)
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         updateUserProfile(name, photo)
-        navigate('/');
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "User Registration Successful",
-          showConfirmButton: false,
-          timer: 1500
-        });
+          .then(() => {
+            const userInfo = {
+              name: name,
+              email: email,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              console.log("user added in the database");
+              if (res.data.insertedId) {
+                navigate("/");
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "User Registration Successful",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              }
+            });
+          })
+          .catch((error) => {
+            console.log("Profile update error:", error.message);
+          });
       })
-      .catch(error => {
-        console.log(error.message);
+      .catch((error) => {
+        console.log("User creation error:", error.message);
       });
   };
 
@@ -57,7 +71,7 @@ const Register = () => {
       <div className="card w-[700px] max-w-xl bg-white shadow-2xl rounded-lg overflow-hidden">
         <div className="p-4 lg:p-4 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
           <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
-           User Registration!
+            User Registration!
           </h2>
           <form onSubmit={handleRegister} className="space-y-2">
             <div className="form-control">
@@ -100,8 +114,8 @@ const Register = () => {
               <label className="label">
                 <span className="label-text text-gray-700">Password</span>
               </label>
-              <input       
-                id="password"      
+              <input
+                id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="********"
@@ -116,7 +130,7 @@ const Register = () => {
                 {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
               </button>
             </div>
-              {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
+            {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
             <div className="form-control mt-6">
               <input
                 className="btn btn-outline w-full transition duration-200"
@@ -124,11 +138,14 @@ const Register = () => {
                 value="Register"
               />
             </div>
-         
+
             <p className="text-center mt-4 text-2xl text-gray-700">
               <small>
                 Already have an account?
-                <Link to="/login" className="text-blue-800 font-bold ml-4 font-bold">
+                <Link
+                  to="/login"
+                  className="text-blue-800 font-bold ml-4 font-bold"
+                >
                   Sign-In
                 </Link>
               </small>

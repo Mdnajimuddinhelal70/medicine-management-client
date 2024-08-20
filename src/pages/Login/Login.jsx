@@ -4,10 +4,12 @@ import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Login = () => {
   const { loginUser, googleSignIn } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,9 +39,16 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    googleSignIn().then((result) => {
-      // console.log(result.user);
-     
+    googleSignIn()
+    .then((result) => {
+      const userInfo ={
+        name: result.user?.displayName,
+        email: result.user?.email,
+      }
+      axiosPublic.post('/users', userInfo)
+      .then(res => {
+        console.log(res.data)
+      })  
     });
     navigate(from, {replac: true})
   };
