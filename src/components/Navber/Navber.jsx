@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
-
+import goodImg from '../../assets/logo/good.png'
 const Navber = () => {
   const { user, logOut } = useContext(AuthContext);
   const [theme, setTheme] = useState(
@@ -79,8 +79,11 @@ const Navber = () => {
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost text-xl">
-          Volunteer Management
+         GOOD HEALTH
         </Link>
+        <img
+        className="w-10 h-10"
+        src={goodImg} alt="" />
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navLinks}</ul>
