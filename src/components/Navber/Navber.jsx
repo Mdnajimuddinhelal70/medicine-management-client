@@ -141,6 +141,15 @@ const Navber = () => {
                 </Link>
               </li>
              
+              <li>
+                <Link
+                  to="/dashboard/home"
+                  className="text-gray-700 hover:text-gray-900"
+                >
+                 Dashboard
+                </Link>
+              </li>
+             
             </ul>
           </div>
         ) : (

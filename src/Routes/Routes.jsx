@@ -9,6 +9,13 @@ import Carts from "../pages/Carts/Carts";
 import ShopPage from "../pages/ShopPage/ShopPage";
 import Payment from "../pages/CheckoutForm/Payment";
 import InvoicePage from "../components/Invoice/InvoicePage";
+import Dashboard from "../layout/Dashboard";
+import AdminHome from "../pages/Dashboard/AdminHome/AdminHome";
+import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
+import ManageCategory from "../pages/Dashboard/ManageCategory/ManageCategory";
+import PaymentManagement from "../pages/Dashboard/PaymentManagement/PaymentManagement";
+import SalesReport from "../pages/Dashboard/SalesReport/SalesReport";
+import ManageBanner from "../pages/Dashboard/ManageBanner/ManageBanner";
 
 
 export const router = createBrowserRouter([
@@ -54,4 +61,34 @@ export const router = createBrowserRouter([
         },
     ]
   },
+  {
+    path: 'dashboard',
+    element: <Dashboard />,
+    children: [
+      {
+        path: 'home',
+        element: <AdminHome />
+      },  
+      {
+        path: 'manageUsers',
+        element: <ManageUsers />
+      },  
+      {
+        path: 'manageCategory',
+        element: <ManageCategory />
+      },  
+      {
+        path: 'paymentManagement',
+        element: <PaymentManagement />
+      },  
+      {
+        path: 'salesReport',
+        element: <SalesReport />
+      },  
+      {
+        path: 'manageBanner',
+        element: <ManageBanner />
+      },  
+    ]
+  }
 ]);
