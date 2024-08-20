@@ -1,5 +1,6 @@
 import Category from "./Category/Category";
 import Featured from "./Featured/Featured";
+import Health from "./Health/Health";
 
 
 const Home = () => {
@@ -7,6 +8,7 @@ const Home = () => {
         <div>
             <Category />
             <Featured />
+            <Health />
         </div>
     );
 };
