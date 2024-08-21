@@ -2,10 +2,10 @@ import { FaHome, FaSalesforce, FaUser } from "react-icons/fa";
 import { FaCarTunnel } from "react-icons/fa6";
 import { PiFlagBanner } from "react-icons/pi";
 import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
-  // Role-based checks (তুমি এই ডাটা API বা Context থেকে আনতে পারো)
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   const isSeller = false;
   const isUser = false;
 
