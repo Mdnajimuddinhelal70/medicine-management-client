@@ -16,6 +16,11 @@ import ManageCategory from "../pages/Dashboard/ManageCategory/ManageCategory";
 import PaymentManagement from "../pages/Dashboard/PaymentManagement/PaymentManagement";
 import SalesReport from "../pages/Dashboard/SalesReport/SalesReport";
 import ManageBanner from "../pages/Dashboard/ManageBanner/ManageBanner";
+import SellerHome from "../pages/Dashboard/SellerPages/SellerHome";
+import ManageMedicine from "../pages/Dashboard/SellerPages/ManageMedicine";
+import PaymentHistory from "../pages/Dashboard/SellerPages/PaymentHistory";
+import SellerAdvertise from "../pages/Dashboard/SellerPages/SellerAdvertise";
+import UserHome from "../pages/UserHome/UserHome";
 
 
 export const router = createBrowserRouter([
@@ -89,6 +94,28 @@ export const router = createBrowserRouter([
         path: 'manageBanner',
         element: <ManageBanner />
       },  
+      // Seller list from here
+      {
+        path: 'sellerHome',
+        element: <SellerHome />
+      }, 
+      {
+        path: 'manageMedicines',
+        element: <ManageMedicine />
+      }, 
+      {
+        path: 'paymentHistory',
+        element: <PaymentHistory />
+      }, 
+      {
+        path: 'sellerAdvertise',
+        element: <SellerAdvertise />
+      }, 
+      //user start here
+      {
+        path: 'userHome',
+        element: <UserHome />
+      }, 
     ]
   }
 ]);

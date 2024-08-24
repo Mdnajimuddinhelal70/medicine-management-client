@@ -20,7 +20,7 @@ const SellerMenu = () => {
       </li>
       <li>
         <NavLink
-          to="/dashboard/manageProducts"
+          to="/dashboard/manageMedicines"
           className={({ isActive }) =>
             `flex items-center gap-2 px-4 py-2 rounded-md ${
               isActive ? "bg-gray-500" : "hover:bg-gray-300"
@@ -28,12 +28,12 @@ const SellerMenu = () => {
           }
         >
           <FaCarTunnel />
-          Manage Products
+          Manage Medicines
         </NavLink>
       </li>
       <li>
         <NavLink
-          to="/dashboard/orders"
+          to="/dashboard/paymentHistory"
           className={({ isActive }) =>
             `flex items-center gap-2 px-4 py-2 rounded-md ${
               isActive ? "bg-gray-500" : "hover:bg-gray-300"
@@ -41,7 +41,20 @@ const SellerMenu = () => {
           }
         >
           <FaSalesforce />
-          View Orders
+          Payment History
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/dashboard/sellerAdvertise"
+          className={({ isActive }) =>
+            `flex items-center gap-2 px-4 py-2 rounded-md ${
+              isActive ? "bg-gray-500" : "hover:bg-gray-300"
+            }`
+          }
+        >
+          <FaSalesforce />
+          Ask For Advertisement
         </NavLink>
       </li>
     </>

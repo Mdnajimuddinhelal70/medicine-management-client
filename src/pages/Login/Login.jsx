@@ -41,17 +41,18 @@ const Login = () => {
   const handleGoogleLogin = () => {
     googleSignIn()
     .then((result) => {
+      navigate(from, {replac: true})
       const userInfo ={
         name: result.user?.displayName,
-        email: result.user?.email,
+        email: result.user?.email,     
       }
       axiosPublic.post('/users', userInfo)
       .then(res => {
         console.log(res.data)
       })  
     });
-    navigate(from, {replac: true})
   };
+ 
 
   return (
     <div className="hero min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center">
