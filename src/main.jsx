@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./Routes/Routes";
 import AuthProvider from "./Providers/AuthProvider";
 import { HelmetProvider } from "react-helmet-async";
+import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
           <div className="max-w-screen-xl mx-auto">
             <RouterProvider router={router} />
           </div>
+          <Toaster />
         </HelmetProvider>
       </QueryClientProvider>
     </AuthProvider>

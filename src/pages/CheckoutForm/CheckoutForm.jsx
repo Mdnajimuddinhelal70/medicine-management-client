@@ -82,29 +82,33 @@ const CheckoutForm = () => {
       console.log('Transaction id', paymentIntent.id);
       setTransactionId(paymentIntent.id);
 
+      // প্রথম আইটেমের নাম ব্যবহার করছি, প্রয়োজনে পরিবর্তন করো
+      const firstItemName = cart.length > 0 ? cart[0].name : "Unknown Medicine";
+
       const payment = {
-        email: user.email,
+        buyerEmail: user.email,
         price: totalPrice,
+        name: firstItemName, // এখানে নাম যুক্ত করেছি
         transactionId: paymentIntent.id,
         date: new Date(),
         cartIds: cart.map(item => item._id),
         myMdcnIds: cart.map(item => item.medicineId),
         status: 'pending'
-      };
+      };      
 
       try {
         const res = await axiosSecure.post('/payments', payment);
         console.log('Payment saved', res.data);
         refetch();
-        if(res.data.paymentResult.insertedId){
+        if (res.data.paymentResult.insertedId) {
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Thanks, your payment successfull",
+            title: "Thanks, your payment was successful",
             showConfirmButton: false,
             timer: 1500
           });
-          navigate('/invoice')
+          navigate('/invoice');
         }
       } catch (error) {
         console.error('Error saving payment:', error);
@@ -145,7 +149,7 @@ const CheckoutForm = () => {
         <button
           type="submit"
           disabled={!stripe || !clientSecret || isProcessing}
-          className="w-full py-2 px-4 bg-violet-700 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300"
+          className="w-full py-2 px-4 bg-violet-700 text-white font-semibold rounded-lg hover:bg-violet-900 transition-colors duration-300"
         >
           {isProcessing ? "Processing..." : "Pay Now"}
         </button>

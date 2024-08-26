@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../Providers/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const UpdateProfile = () => {
   const { user, updateUserProfile, updateUserPassword } = useContext(AuthContext);
@@ -20,21 +21,23 @@ const UpdateProfile = () => {
       }
 
       if (email !== user?.email) {
-        // Re-authentication might be needed
+      
         promises.push(user.updateEmail(email));
       }
 
       if (newPassword) {
-        // Re-authentication might be needed
+       
         promises.push(updateUserPassword(currentPassword, newPassword));
       }
 
       await Promise.all(promises);
-      alert('Profile updated successfully!');
+      
+      toast.success('Profile updated successfully!');
     } catch (error) {
       if (error.code === 'auth/requires-recent-login') {
-        // Handle re-authentication scenario here
+      
         setError('Please re-authenticate and try again.');
+        toast.error('Please re-authenticate and try again.');
       } else {
         setError(error.message);
       }
@@ -72,26 +75,6 @@ const UpdateProfile = () => {
             type="text"
             value={photoURL}
             onChange={(e) => setPhotoURL(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="currentPassword" className="mb-2 text-gray-600">Current Password:</label>
-          <input
-            id="currentPassword"
-            type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="newPassword" className="mb-2 text-gray-600">New Password:</label>
-          <input
-            id="newPassword"
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
             className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

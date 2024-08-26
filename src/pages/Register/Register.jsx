@@ -43,6 +43,7 @@ const Register = () => {
             const userInfo = {
               name: name,
               email: email,
+               role: 'user'
             };
             axiosPublic.post("/users", userInfo).then((res) => {
               console.log("user added in the database");

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AuthContext } from "../../../Providers/AuthProvider";
@@ -19,10 +19,19 @@ const ManageMedicine = () => {
     noOfMedicines: 0,
     company: "",
     quantity: 0,
-    email: user?.email || "", // Email field correctly set
+    sellerEmail: "", // Initial value empty
   });
 
-  // Fetch seller's medicines
+  // Effect to update sellerEmail once user data is available
+  useEffect(() => {
+    if (user?.email) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        sellerEmail: user.email,
+      }));
+    }
+  }, [user]);
+
   const { data: medicines, isLoading } = useQuery({
     queryKey: ["myMedicine"],
     queryFn: async () => {
@@ -33,20 +42,15 @@ const ManageMedicine = () => {
     },
   });
 
-  // Handle form submit
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axiosSecure.post("/myMedicine", formData);
-      console.log(response.data);
-      queryClient.invalidateQueries(["myMedicine"]);
-      setIsModalOpen(false); 
-    } catch (error) {
-      console.error("Error adding medicine:", error);
-    }
+    console.log("Form data being sent:", formData);
+    const response = await axiosSecure.post("/myMedicine", formData);
+    console.log(response.data);
+    queryClient.invalidateQueries(["myMedicine"]);
+    setIsModalOpen(false); 
   };
 
-  // Handle input change
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -72,7 +76,7 @@ const ManageMedicine = () => {
               <th>Price</th>
               <th>Description</th>
               <th>Type</th>
-              <th>Dosage</th>P
+              <th>Dosage</th>
               <th>No Of Medicines</th>
               <th>Company</th>
               <th>Quantity</th>
@@ -96,7 +100,6 @@ const ManageMedicine = () => {
         </table>
       )}
 
-      {/* Modal for Adding Medicine */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
           <div className="bg-white p-6 rounded-md shadow-md w-full max-w-2xl">

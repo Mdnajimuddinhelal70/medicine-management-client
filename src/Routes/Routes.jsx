@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
           element: <Register />
         },
         {
-          path: "/upateProfile",
+          path: "/updateProfile",
           element: <UpdateProfile />
         },
         {
