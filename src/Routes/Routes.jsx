@@ -21,11 +21,13 @@ import ManageMedicine from "../pages/Dashboard/SellerPages/ManageMedicine";
 import PaymentHistory from "../pages/Dashboard/SellerPages/PaymentHistory";
 import SellerAdvertise from "../pages/Dashboard/SellerPages/SellerAdvertise";
 import UserHome from "../pages/UserHome/UserHome";
+import NotFound from "../components/NotFound/NotFound";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <NotFound />,
     element: <Main />,
     children: [
         {
