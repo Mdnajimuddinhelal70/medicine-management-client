@@ -25,12 +25,16 @@ const Category = () => {
       });
   }, []);
 
+ 
   return (
-    <div className="container md:grid grid-cols-3 gap-4 mt-20 mb-10 mx-auto">
+   <>
+    <h1 className="text-4xl font-bold ml-16 mt-16 text-fuchsia-900"> Explore Our Category-wise Medicine</h1>
+    <div className="container md:grid grid-cols-3 gap-4 mt-8 mb-10 mx-auto">
       {medicines.map((item, index) => (
         <CategoryItems key={index} item={item} />
       ))}
     </div>
+   </>
   );
 };
 

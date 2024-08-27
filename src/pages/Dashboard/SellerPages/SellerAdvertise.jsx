@@ -69,7 +69,7 @@ const SellerAdvertise = () => {
             {advertisements?.map((ad) => (
               <tr key={ad._id}>
                 <td>
-                  <img src={ad.medicineImage} alt="Medicine" className="w-16 h-16" />
+                  <img src={ad.medicineImage} alt="Medicine" className="w-16 h-10 mb-4" />
                 </td>
                 <td>{ad.description}</td>
                 <td>{ad.status}</td>

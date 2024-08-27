@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-64 bg-pink-600 text-white shadow-md">
+      <div className="w-64 bg-zinc-400 text-white shadow-md">
         <nav className="mt-6">
           <ul className="space-y-4">
             {role === "admin" && <AdminMenu />}

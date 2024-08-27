@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { AuthContext } from "../../Providers/AuthProvider";
@@ -12,17 +12,22 @@ const InvoicePage = () => {
   const { data: payments = [] } = useQuery({
     queryKey: ["payments", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/payments/${user?.email}`);
+      const res = await axiosSecure.get(`/inv-payments/${user?.email}`);
       return res.data;
     },
   });
+
+  useEffect(() => {
+    console.log("Payments Data:", payments);
+  }, [payments]);
 
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 shadow-lg mt-10 bg-violet-500">
+    <div className="max-w-3xl mx-auto p-8 shadow-lg mt-10 mb-10 bg-violet-500">
+     
       <div className="flex justify-between items-center mb-8">
         <div>
           <img src={logo} alt="Website Logo" className="h-16" />
@@ -35,6 +40,7 @@ const InvoicePage = () => {
         </button>
       </div>
 
+      {/* User Details */}
       <div className="mb-8">
         <h2 className="text-2xl font-semibold">Invoice</h2>
         <p className="text-lg mt-2">
@@ -48,6 +54,7 @@ const InvoicePage = () => {
         </p>
       </div>
 
+      {/* Payment Table */}
       <div className="overflow-x-auto mb-8">
         <table className="table-auto w-full border-collapse border">
           <thead>

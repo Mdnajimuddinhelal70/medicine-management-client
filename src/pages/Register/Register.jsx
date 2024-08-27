@@ -4,81 +4,90 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../Providers/AuthProvider";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Register = () => {
   const [error, setError] = useState("");
-  const { createUser, updateUserProfile, user } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const axiosPublic = useAxiosPublic();
-
   const navigate = useNavigate();
+
   const handleRegister = async (event) => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
-    const photo = form.photo.value;
+    const photo = form.photo.files[0];
     const email = form.email.value;
     const password = form.password.value;
 
-    const uppercaseRegex = /[A-Z]/;
-    const lowercaseRegex = /[a-z]/;
+   
+    const formData = new FormData();
+    formData.append("image", photo);
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long!");
-      return;
-    }
-    if (!uppercaseRegex.test(password)) {
-      setError("Password must contain at least one uppercase letter!");
-      return;
-    }
-    if (!lowercaseRegex.test(password)) {
-      setError("Password must contain at least one lowercase letter!");
-      return;
-    }
-    
-    createUser(email, password)
-      .then((result) => {
-        updateUserProfile(name, photo)
+    try {
+      const { data } = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_API_KEY
+        }`,
+        formData
+      );
+
+      if (data.success) {
+        const photoUrl = data.data.display_url;
+
+        createUser(email, password)
           .then(() => {
-            const userInfo = {
-              name: name,
-              email: email,
-               role: 'user'
-            };
-            axiosPublic.post("/users", userInfo).then((res) => {
-              console.log("user added in the database");
-              if (res.data.insertedId) {
-                navigate("/");
-                Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: "User Registration Successful",
-                  showConfirmButton: false,
-                  timer: 1500,
+            updateUserProfile(name, photoUrl)
+              .then(() => {
+                const userInfo = {
+                  name,
+                  email,
+                  role: "user",
+                };
+
+                axiosPublic.post("/users", userInfo).then((res) => {
+                  if (res.data.insertedId) {
+                    navigate("/");
+                    Swal.fire({
+                      position: "top-end",
+                      icon: "success",
+                      title: "User Registration Successful",
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+                  }
                 });
-              }
-            });
+              })
+              .catch((error) => {
+                console.error("Profile update error:", error.message);
+              });
           })
           .catch((error) => {
-            console.log("Profile update error:", error.message);
+            console.error("User creation error:", error.message);
           });
-      })
-      .catch((error) => {
-        console.log("User creation error:", error.message);
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Image upload failed. Please try again!",
       });
+    }
   };
 
   return (
-    <div className="hero min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center">
+    <div className="hero min-h-screen h-14 flex items-center justify-center">
       <div className="card w-[700px] max-w-xl bg-white shadow-2xl rounded-lg overflow-hidden">
-        <div className="p-4 lg:p-4 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
+        <div className="p-4 lg:p-4 bg-gradient-to-r from-indigo-900 via-sky-500 to-emerald-500">
           <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
             User Registration!
           </h2>
-          <form onSubmit={handleRegister} className="space-y-2">
+          <form onSubmit={handleRegister} className="space-y-2 px-10">
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-gray-700">Username</span>
+                <span className="label-text text-xl text-lime-400">Username</span>
               </label>
               <input
                 type="text"
@@ -90,19 +99,21 @@ const Register = () => {
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-gray-700">Photo URL</span>
+                <span className="label-text text-xl text-lime-400 font-medium">
+                  Upload Photo
+                </span>
               </label>
               <input
-                type="text"
+                type="file"
                 name="photo"
-                placeholder="Enter your photo URL"
-                className="input input-bordered w-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition duration-200"
+                className="file-input file-input-bordered w-full transition duration-200 bg-black text-white"
                 required
               />
             </div>
+
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-gray-700">Email</span>
+                <span className="label-text text-xl text-lime-400">Email</span>
               </label>
               <input
                 type="email"
@@ -114,14 +125,14 @@ const Register = () => {
             </div>
             <div className="form-control relative">
               <label className="label">
-                <span className="label-text text-gray-700">Password</span>
+                <span className="label-text text-xl text-lime-400">Password</span>
               </label>
               <input
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="********"
-                className="input input-bordered w-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition duration-200 pr-12" // Adjust padding-right
+                className="input input-bordered w-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition duration-200 pr-12"
                 required
               />
               <button
@@ -140,14 +151,10 @@ const Register = () => {
                 value="Register"
               />
             </div>
-
             <p className="text-center mt-4 text-2xl text-gray-700">
               <small>
                 Already have an account?
-                <Link
-                  to="/login"
-                  className="text-blue-800 font-bold ml-4 font-bold"
-                >
+                <Link to="/login" className="text-blue-800 font-bold ml-4">
                   Sign-In
                 </Link>
               </small>

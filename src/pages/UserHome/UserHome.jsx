@@ -7,17 +7,35 @@ const UserHome = () => {
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
 
-  const { data: paymentHistory, isLoading } = useQuery({
+  const { data: paymentData, isLoading } = useQuery({
     queryKey: ["paymentHistory", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/payment-history?email=${user?.email}`);
+      console.log(res.data)
       return res.data;
     },
   });
 
+  // Extract the paymentHistory, paidTotal, and pendingTotal from the response
+  const paymentHistory = paymentData?.paymentHistory || [];
+  const paidTotal = paymentData?.paidTotal || 0;
+  const pendingTotal = paymentData?.pendingTotal || 0;
+
   return (
     <div className="p-6 space-y-6 bg-white shadow-md rounded-lg">
       <h2 className="text-3xl font-bold text-gray-800">Your Payment History</h2>
+
+      {/* Display Paid and Pending Totals */}
+      <div className="flex justify-between mb-6">
+        <div>
+          <h4 className="text-xl font-semibold text-green-600">Paid Total: ${paidTotal}</h4>
+        </div>
+        <div>
+          <h4 className="text-xl font-semibold text-red-600">Pending Total: ${pendingTotal}</h4>
+        </div>
+      </div>
+
+      {/* Display Payment History */}
       {isLoading ? (
         <div className="flex items-center justify-center py-10">
           <p className="text-gray-600 text-lg">Loading...</p>
@@ -32,7 +50,7 @@ const UserHome = () => {
               </tr>
             </thead>
             <tbody>
-              {paymentHistory?.map((payment, idx) => (
+              {paymentHistory.map((payment, idx) => (
                 <tr
                   key={payment._id}
                   className={`${
