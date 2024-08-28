@@ -55,9 +55,9 @@ const Login = () => {
  
 
   return (
-    <div className="hero min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center">
+    <div className="hero min-h-screen flex items-center justify-center">
       <div className="card w-full max-w-xl bg-white shadow-2xl rounded-lg overflow-hidden">
-        <div className="p-8 lg:p-10 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ...">
+        <div className="p-8 lg:p-10 bg-gradient-to-r from-indigo-500 from-10% via-sky-400 via-30% to-emerald-500 to-90% ...">
           <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
             Welcome Back !
           </h2>
@@ -115,7 +115,7 @@ const Login = () => {
                 <FaGoogle />
               </button>
             </div>
-            <p className="text-center mt-4 text-2xl text-gray-700">
+            <p className="text-center mt-4 text-2xl text-black">
               <small>
                 New here? go to
                 <Link to="/register" className="text-blue-800 font-bold ml-3">

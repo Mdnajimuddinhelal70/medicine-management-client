@@ -1,8 +1,17 @@
+import { useContext } from "react";
 import { FaHome, FaSalesforce } from "react-icons/fa";
 import { FaCarTunnel } from "react-icons/fa6";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const SellerMenu = () => {
+
+  const {logOut} = useContext(AuthContext)
+  const navigate = useNavigate()
+   const handleLogout = () => {
+     logOut()
+     navigate('/login')
+   }
   return (
     <>
       <li>
@@ -71,6 +80,26 @@ const SellerMenu = () => {
            Home
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/shopPage"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded-md flex items-center gap-2 ${
+              isActive ? "bg-gray-500" : "hover:bg-gray-300"
+            }`
+          }
+        >
+          <NavLink />
+          Shop Page
+        </NavLink>
+      </li>
+      <div className="">
+        <button
+        onClick={handleLogout}
+        className="bg-fuchsia-300-500 text-white px-4 py-2 rounded-md hover:bg-pink-950">
+         Log Out
+        </button>
+      </div>
     </>
   );
 };

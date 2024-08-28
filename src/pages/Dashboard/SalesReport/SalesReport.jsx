@@ -1,110 +1,111 @@
 import React, { useState } from "react";
+import DataTable from "react-data-table-component";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import moment from "moment";
 import { CSVLink } from "react-csv";
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable"; // For automatic table creation in PDF
-
+import useAxiosSecure from './../../../hooks/useAxiosSecure';
 
 const SalesReport = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [format, setFormat] = useState("pdf");
+  const axiosSecure = useAxiosSecure();
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
 
-  const fetchReport = async () => {
-    const { data } = await axios.get("/sales-report", {
-      params: { startDate, endDate }
-    });
-    return data;
-  };
-
-  const { data: reportData, isLoading } = useQuery({
-    queryKey: ["salesReport", startDate, endDate],
-    queryFn: fetchReport,
-    enabled: !!startDate && !!endDate, 
+  const { data: sales = [] } = useQuery({
+    queryKey: ["sales-report"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/sales-reports");
+      return res.data;
+    },
   });
 
-  const handleDownload = () => {
-    if (format === "pdf") {
-      const doc = new jsPDF();
-      doc.autoTable({
-        head: [["Medicine Name", "Seller Email", "Buyer Email", "Total Price"]],
-        body: reportData.map(item => [
-          item.medicineName,
-          item.sellerEmail,
-          item.buyerEmail,
-          item.totalPrice
-        ]),
-      });
-      doc.save("sales-report.pdf");
-    } else if (format === "csv") {
-      // The CSVLink component will handle CSV download
-    } else if (format === "xlsx") {
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(reportData);
-      XLSX.utils.book_append_sheet(wb, ws, "Sales Report");
-      const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-      const buf = new ArrayBuffer(wbout.length);
-      const view = new Uint8Array(buf);
-      for (let i = 0; i < wbout.length; i++) view[i] = wbout.charCodeAt(i) & 0xff;
-      const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-      saveAs(blob, "sales-report.xlsx");
-    }
-  };
+  // Date range filter
+  const filteredSales = sales.filter((sale) => {
+    const saleDate = moment(sale.date);
+    const startDate = dateRange.startDate ? moment(dateRange.startDate) : null;
+    const endDate = dateRange.endDate ? moment(dateRange.endDate) : null;
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+    return (
+      (!startDate || saleDate.isSameOrAfter(startDate)) &&
+      (!endDate || saleDate.isSameOrBefore(endDate))
+    );
+  });
+
+  // Columns for DataTable
+  const columns = [
+    {
+      name: "Medicine Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Seller Email",
+      selector: (row) => row.sellerEmail,
+      sortable: true,
+    },
+    {
+      name: "Buyer Email",
+      selector: (row) => row.buyerEmail,
+      sortable: true,
+    },
+    {
+      name: "Total Price",
+      selector: (row) => `$${row.totalPrice}`,
+      sortable: true,
+    },
+    {
+      name: "Date",
+      selector: (row) => moment(row.date).format("YYYY-MM-DD"),
+      sortable: true,
+    },
+  ];
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">Sales Report</h2>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Start Date</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        />
+    <div className="p-6 bg-white shadow-md rounded-lg">
+      <h2 className="text-2xl font-bold mb-4">Sales Report</h2>
+
+      {/* Date Range Filter */}
+      <div className="mb-4 flex gap-4">
+        <div>
+          <label className="block text-gray-700">Start Date:</label>
+          <input
+            type="date"
+            value={dateRange.startDate}
+            onChange={(e) =>
+              setDateRange({ ...dateRange, startDate: e.target.value })
+            }
+            className="input input-bordered"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700">End Date:</label>
+          <input
+            type="date"
+            value={dateRange.endDate}
+            onChange={(e) =>
+              setDateRange({ ...dateRange, endDate: e.target.value })
+            }
+            className="input input-bordered"
+          />
+        </div>
       </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">End Date</label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Format</label>
-        <select
-          value={format}
-          onChange={(e) => setFormat(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        >
-          <option value="pdf">PDF</option>
-          <option value="csv">CSV</option>
-          <option value="xlsx">XLSX</option>
-        </select>
-      </div>
-      <button
-        onClick={handleDownload}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-      >
-        Download Report
-      </button>
-      {format === "csv" && reportData && (
+
+      {/* DataTable */}
+      <DataTable
+        columns={columns}
+        data={filteredSales}
+        pagination
+        highlightOnHover
+      />
+
+      {/* CSV Download Button */}
+      <div className="mt-4">
         <CSVLink
-          data={reportData}
+          data={filteredSales}
           filename="sales-report.csv"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ml-2"
+          className="btn btn-primary"
         >
           Download CSV
         </CSVLink>
-      )}
+      </div>
     </div>
   );
 };

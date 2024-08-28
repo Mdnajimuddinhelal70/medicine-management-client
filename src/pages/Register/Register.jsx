@@ -100,7 +100,7 @@ const Register = () => {
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-xl text-lime-400 font-medium">
-                  Upload Photo
+                  Upload Image
                 </span>
               </label>
               <input
@@ -151,7 +151,7 @@ const Register = () => {
                 value="Register"
               />
             </div>
-            <p className="text-center mt-4 text-2xl text-gray-700">
+            <p className="text-center mt-4 text-2xl text-black">
               <small>
                 Already have an account?
                 <Link to="/login" className="text-blue-800 font-bold ml-4">

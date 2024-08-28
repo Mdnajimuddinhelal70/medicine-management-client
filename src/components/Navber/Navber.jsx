@@ -76,24 +76,6 @@ const Navbar = () => {
         </label>
 
        
-        <div className="dropdown dropdown-end">
-          <button tabIndex={0} className="btn btn-ghost text-gray-700">
-            Languages
-          </button>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-40"
-          >
-            <li>
-              <button>English</button>
-            </li>
-            <li>
-              <button>Bengali</button>
-            </li>
-         
-          </ul>
-        </div>
-
      
         {user ? (
           <div className="dropdown dropdown-end">
@@ -133,7 +115,7 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <Link to="/login" className="btn btn-primary text-white">
+          <Link to="/login" className="btn btn-accent text-xl bg-yellow-700 hover:bg-yellow-800 border-0 text-white">
             Join Us
           </Link>
         )}
