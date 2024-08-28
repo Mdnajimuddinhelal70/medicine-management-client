@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
-import axios from "axios"; 
+import axios from "axios";
 
 const SellerAdvertise = () => {
   const { user } = useContext(AuthContext);

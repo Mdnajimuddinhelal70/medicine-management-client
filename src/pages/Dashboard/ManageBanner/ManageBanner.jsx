@@ -31,7 +31,7 @@ const ManageBanner = () => {
           ad._id === id ? { ...ad, addedToSlider } : ad
         )
       );
-      toast.success("Advertisement status updated!");
+      toast.success("Advertisement status updated! from Home Slider");
     } catch (error) {
       toast.error("Failed to update status");
     }
