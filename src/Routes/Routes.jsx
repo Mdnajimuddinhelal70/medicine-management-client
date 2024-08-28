@@ -22,7 +22,7 @@ import PaymentHistory from "../pages/Dashboard/SellerPages/PaymentHistory";
 import SellerAdvertise from "../pages/Dashboard/SellerPages/SellerAdvertise";
 import UserHome from "../pages/UserHome/UserHome";
 import NotFound from "../components/NotFound/NotFound";
-
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -30,94 +30,102 @@ export const router = createBrowserRouter([
     errorElement: <NotFound />,
     element: <Main />,
     children: [
-        {
-            index: true,
-            element: <Home />
-        },
-        {
-          path: "/login",
-          element: <Login />
-        },
-        {
-          path: "/register",
-          element: <Register />
-        },
-        {
-          path: "/updateProfile",
-          element: <UpdateProfile />
-        },
-        {
-          path: "/categoryDetails/:categoryName",
-          element: <CategoryDetails />
-        },
-        {
-          path: "/carts",
-          element: <Carts />
-        },
-        {
-          path: "/shopPage",
-          element: <ShopPage />
-        },
-        {
-          path: "/payment",
-          element: <Payment />
-        },
-        {
-          path: "/invoice",
-          element: <InvoicePage />
-        },
-    ]
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/updateProfile",
+        element: <UpdateProfile />,
+      },
+      {
+        path: "/categoryDetails/:categoryName",
+        element: <CategoryDetails />,
+      },
+      {
+        path: "/carts",
+        element: (
+          <PrivateRoute>
+            <Carts />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/shopPage",
+        element: (
+          <PrivateRoute>
+            <ShopPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment",
+        element: <Payment />,
+      },
+      {
+        path: "/invoice",
+        element: <InvoicePage />,
+      },
+    ],
   },
   {
-    path: 'dashboard',
+    path: "dashboard",
     element: <Dashboard />,
     children: [
       {
-        path: 'home',
-        element: <AdminHome />
-      },  
+        path: "home",
+        element: <AdminHome />,
+      },
       {
-        path: 'manageUsers',
-        element: <ManageUsers />
-      },  
+        path: "manageUsers",
+        element: <ManageUsers />,
+      },
       {
-        path: 'manageCategory',
-        element: <ManageCategory />
-      },  
+        path: "manageCategory",
+        element: <ManageCategory />,
+      },
       {
-        path: 'paymentManagement',
-        element: <PaymentManagement />
-      },  
+        path: "paymentManagement",
+        element: <PaymentManagement />,
+      },
       {
-        path: 'salesReport',
-        element: <SalesReport />
-      },  
+        path: "salesReport",
+        element: <SalesReport />,
+      },
       {
-        path: 'manageBanner',
-        element: <ManageBanner />
-      },  
+        path: "manageBanner",
+        element: <ManageBanner />,
+      },
       // Seller list from here
       {
-        path: 'sellerHome',
-        element: <SellerHome />
-      }, 
+        path: "sellerHome",
+        element: <SellerHome />,
+      },
       {
-        path: 'manageMedicines',
-        element: <ManageMedicine />
-      }, 
+        path: "manageMedicines",
+        element: <ManageMedicine />,
+      },
       {
-        path: 'paymentHistory',
-        element: <PaymentHistory />
-      }, 
+        path: "paymentHistory",
+        element: <PaymentHistory />,
+      },
       {
-        path: 'sellerAdvertise',
-        element: <SellerAdvertise />
-      }, 
+        path: "sellerAdvertise",
+        element: <SellerAdvertise />,
+      },
       //user start here
       {
-        path: 'userHome',
-        element: <UserHome />
-      }, 
-    ]
-  }
+        path: "userHome",
+        element: <UserHome />,
+      },
+    ],
+  },
 ]);

@@ -1,12 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const PaymentManagement = () => {
   const axiosSecure = useAxiosSecure();
 
   // Fetch payments data
-  const { data: payments, isLoading, refetch } = useQuery({
+  const {
+    data: payments,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/payments");
@@ -38,11 +43,19 @@ const PaymentManagement = () => {
         axiosSecure
           .patch(`/payments/${id}`, { status: "paid" }) // Update payment status to "paid"
           .then(() => {
-            Swal.fire("Updated!", "The payment has been marked as paid.", "success");
+            Swal.fire(
+              "Updated!",
+              "The payment has been marked as paid.",
+              "success"
+            );
             refetch(); // Refresh data after successful update
           })
           .catch((error) => {
-            Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Please try again.",
+              "error"
+            );
           });
       }
     });
@@ -66,7 +79,11 @@ const PaymentManagement = () => {
             refetch();
           })
           .catch((error) => {
-            Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Please try again.",
+              "error"
+            );
           });
       }
     });
@@ -74,6 +91,9 @@ const PaymentManagement = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
+      <Helmet>
+        <title>Health || Payment Management</title>
+      </Helmet>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">All Payments</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -93,7 +113,9 @@ const PaymentManagement = () => {
                   idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } border-b hover:bg-gray-100`}
               >
-                <td className="py-3 px-4 text-gray-700">{payment.buyerEmail}</td>
+                <td className="py-3 px-4 text-gray-700">
+                  {payment.buyerEmail}
+                </td>
                 <td className="py-3 px-4 text-gray-700 font-semibold">
                   ${payment.price}
                 </td>

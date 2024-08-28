@@ -3,7 +3,8 @@ import DataTable from "react-data-table-component";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { CSVLink } from "react-csv";
-import useAxiosSecure from './../../../hooks/useAxiosSecure';
+import useAxiosSecure from "./../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const SalesReport = () => {
   const axiosSecure = useAxiosSecure();
@@ -61,8 +62,9 @@ const SalesReport = () => {
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Sales Report</h2>
-
-      {/* Date Range Filter */}
+      <Helmet>
+        <title>Health || Sales Report</title>
+      </Helmet>
       <div className="mb-4 flex gap-4">
         <div>
           <label className="block text-gray-700">Start Date:</label>

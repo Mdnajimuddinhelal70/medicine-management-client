@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const AdminHome = () => {
   const axiosSecure = useAxiosSecure();
@@ -17,6 +18,9 @@ const AdminHome = () => {
   });
   return (
     <div>
+      <Helmet>
+        <title>Health || Seller Home</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-4">
         Hi, Welcome {user?.displayName}
       </h1>

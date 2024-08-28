@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const AdminHome = () => {
   const axiosSecure = useAxiosSecure();
@@ -11,13 +12,18 @@ const AdminHome = () => {
     queryKey: ["admin-stats"],
     queryFn: async () => {
       const res = await axiosSecure.get("/admin-stats");
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     },
   });
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Hi, Welcome {user?.displayName}</h1>
+      <Helmet>
+        <title>Health || Admin Home</title>
+      </Helmet>
+      <h1 className="text-2xl font-bold mb-4">
+        Hi, Welcome {user?.displayName}
+      </h1>
       <div>
         <div className="stats shadow">
           <div className="stat place-items-center">

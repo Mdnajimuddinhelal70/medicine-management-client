@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Switch } from "@headlessui/react";
 import { toast } from "react-hot-toast";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const ManageBanner = () => {
   const axiosSecure = useAxiosSecure();
@@ -40,6 +41,9 @@ const ManageBanner = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>Health || Banner Advertise</title>
+      </Helmet>
       <h2 className="text-2xl font-semibold mb-4">Manage Banner Advertise</h2>
       <table className="min-w-full mt-4">
         <thead>

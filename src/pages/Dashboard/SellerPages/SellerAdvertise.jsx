@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { Helmet } from "react-helmet-async";
+import axios from "axios"; 
 
 const SellerAdvertise = () => {
   const { user } = useContext(AuthContext);
@@ -12,12 +14,14 @@ const SellerAdvertise = () => {
     medicineImage: "",
     description: "",
   });
+  const [imageFile, setImageFile] = useState(null);
 
-  
   const { data: advertisements, isLoading } = useQuery({
     queryKey: ["advertisements", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/advertisements?sellerEmail=${user?.email}`);
+      const res = await axiosSecure.get(
+        `/advertisements?sellerEmail=${user?.email}`
+      );
       return res.data;
     },
   });
@@ -30,53 +34,106 @@ const SellerAdvertise = () => {
     },
   });
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const newAdvertisement = {
-      sellerEmail: user.email,
-      medicineImage: formData.medicineImage,
-      description: formData.description,
-    };
-    mutation.mutate(newAdvertisement);
+
+    if (!imageFile) {
+      return alert("Please select an image file!");
+    }
+
+   
+    const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
+    
+  
+    const uploadFormData = new FormData();
+    uploadFormData.append("image", imageFile);
+
+    try {
+      const { data } = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+        uploadFormData
+      );
+
+      if (data.success) {
+        const imageUrl = data.data.display_url;
+
+        const newAdvertisement = {
+          sellerEmail: user.email,
+          medicineImage: imageUrl, 
+          description: formData.description,
+        };
+
+        mutation.mutate(newAdvertisement);
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+      alert("Image upload failed. Please try again!");
+    }
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === "medicineImage") {
+      setImageFile(e.target.files[0]); 
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>Health || Seller Advertise</title>
+      </Helmet>
       <h2 className="text-2xl font-semibold mb-4">Advertisements</h2>
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="btn btn-success"
-      >
+      <button onClick={() => setIsModalOpen(true)} className="btn btn-success">
         Add Advertisement
       </button>
 
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <table className="min-w-full mt-4">
-          <thead>
-            <tr>
-              <th>Medicine Image</th>
-              <th>Description</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {advertisements?.map((ad) => (
-              <tr key={ad._id}>
-                <td>
-                  <img src={ad.medicineImage} alt="Medicine" className="w-16 h-10 mb-4" />
-                </td>
-                <td>{ad.description}</td>
-                <td>{ad.status}</td>
+        <div className="overflow-x-auto mt-10">
+          <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+            <thead>
+              <tr className="bg-gray-100 border-b">
+                <th className="text-left px-6 py-3 text-gray-600 font-medium">
+                  Medicine Image
+                </th>
+                <th className="text-left px-6 py-3 text-gray-600 font-medium">
+                  Description
+                </th>
+                <th className="text-left px-6 py-3 text-gray-600 font-medium">
+                  Status
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {advertisements?.map((ad) => (
+                <tr key={ad._id} className="border-b hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <img
+                      src={ad.medicineImage}
+                      alt="Medicine"
+                      className="w-16 h-10 rounded-lg"
+                    />
+                  </td>
+                  <td className="px-6 py-4">{ad.description}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm ${
+                        ad.status === "Active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {ad.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {isModalOpen && (
@@ -86,12 +143,11 @@ const SellerAdvertise = () => {
             <form onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 gap-4">
                 <input
-                  type="text"
+                  type="file"
                   name="medicineImage"
-                  placeholder="Medicine Image URL"
-                  value={formData.medicineImage}
                   onChange={handleInputChange}
                   className="border px-2 py-1 rounded w-full"
+                  required
                 />
                 <textarea
                   name="description"
@@ -102,10 +158,7 @@ const SellerAdvertise = () => {
                 ></textarea>
               </div>
               <div className="mt-4 flex justify-end">
-                <button
-                  type="submit"
-                  className="btn btn-outline"
-                >
+                <button type="submit" className="btn btn-outline">
                   Add Advertisement
                 </button>
                 <button

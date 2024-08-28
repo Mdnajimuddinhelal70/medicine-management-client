@@ -20,7 +20,7 @@ const Login = () => {
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    // console.log(email, password);
+   
 
     loginUser(email, password)
       .then(() => {
@@ -41,7 +41,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     googleSignIn()
     .then((result) => {
-      navigate(from, {replac: true})
+      navigate(from, {replace: true})
       const userInfo ={
         name: result.user?.displayName,
         email: result.user?.email,     

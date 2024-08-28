@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { AuthContext } from "../../Providers/AuthProvider";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
@@ -8,10 +8,12 @@ import axios from "axios";
 
 const Register = () => {
   const [error, setError] = useState("");
-  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const { createUser, updateUserProfile, googleSignIn } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -21,15 +23,12 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-   
     const formData = new FormData();
     formData.append("image", photo);
 
     try {
       const { data } = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGBB_API_KEY
-        }`,
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
         formData
       );
 
@@ -48,7 +47,8 @@ const Register = () => {
 
                 axiosPublic.post("/users", userInfo).then((res) => {
                   if (res.data.insertedId) {
-                    navigate("/");
+                    console.log(res.data.insertedId)
+                    navigate(from, { replace: true });
                     Swal.fire({
                       position: "top-end",
                       icon: "success",
@@ -77,8 +77,24 @@ const Register = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    googleSignIn()
+    .then((result) => {
+      navigate(from, {replace: true})
+      const userInfo = {
+        name: result.user?.displayName,
+        email: result.user?.email,
+      };
+      axiosPublic.post("/users", userInfo).then((res) => {
+        if (res.data.insertedId) {
+         
+        }
+      });
+    });
+  };
+
   return (
-    <div className="hero min-h-screen h-14 flex items-center justify-center">
+    <div className="hero min-h-screen h-14 mt-16 mb-12 flex items-center justify-center">
       <div className="card w-[700px] max-w-xl bg-white shadow-2xl rounded-lg overflow-hidden">
         <div className="p-4 lg:p-4 bg-gradient-to-r from-indigo-900 via-sky-500 to-emerald-500">
           <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
@@ -150,6 +166,15 @@ const Register = () => {
                 type="submit"
                 value="Register"
               />
+            </div>
+            <div>
+              <button
+                className="btn btn-outline w-full"
+                onClick={handleGoogleLogin}
+              >
+                Google
+                <FaGoogle />
+              </button>
             </div>
             <p className="text-center mt-4 text-2xl text-black">
               <small>

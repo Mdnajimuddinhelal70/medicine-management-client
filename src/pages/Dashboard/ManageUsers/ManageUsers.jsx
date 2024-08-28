@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./../../../hooks/useAxiosSecure";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { Dialog, Listbox } from "@headlessui/react";
+import { Helmet } from "react-helmet-async";
 
 const roles = ["admin", "seller", "user"];
 
@@ -26,7 +26,7 @@ const ManageUsers = () => {
       axiosSecure
         .patch(`/users/role/${selectedUser._id}`, { role: selectedRole })
         .then((res) => {
-          console.log("Response:", res.data); 
+          console.log("Response:", res.data);
           if (res.data.modifiedCount > 0) {
             refetch();
             Swal.fire({
@@ -42,10 +42,12 @@ const ManageUsers = () => {
         });
     }
   };
-  
 
   return (
     <div>
+      <Helmet>
+        <title>Health || Manage User</title>
+      </Helmet>
       <div className="flex justify-evenly my-4">
         <h2 className="text-2xl">All users</h2>
         <h2 className="text-2xl">Total users: {users.length}</h2>
@@ -121,10 +123,7 @@ const ManageUsers = () => {
               >
                 Cancel
               </button>
-              <button
-                onClick={handleRoleUpdate}
-                className="btn btn-primary"
-              >
+              <button onClick={handleRoleUpdate} className="btn btn-primary">
                 Update
               </button>
             </div>

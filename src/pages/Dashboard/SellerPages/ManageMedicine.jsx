@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const ManageMedicine = () => {
   const { user } = useContext(AuthContext);
@@ -102,10 +103,14 @@ const ManageMedicine = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+           <Helmet>
+              <title>Health || Manage Medicines</title>
+            </Helmet>
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
             <h3 className="text-xl font-semibold mb-6 text-gray-800">
               Add New Medicine
             </h3>
+           
             <form onSubmit={handleFormSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <input

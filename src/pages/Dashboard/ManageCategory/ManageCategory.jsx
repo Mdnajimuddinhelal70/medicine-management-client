@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import CategoryModal from "../../Dashboard/ManageCategory/CategoryModal";
+import { Helmet } from "react-helmet-async";
 
 const ManageCategory = () => {
   const axiosSecure = useAxiosSecure();
@@ -35,23 +36,23 @@ const ManageCategory = () => {
 
   const handleUpdate = async (updatedCategory) => {
     try {
-     
       const { _id, ...categoryWithoutId } = updatedCategory;
-  
+
       await axiosSecure.patch(`/myMedicine/${_id}`, categoryWithoutId);
-  
+
       setCategories((prevCategories) =>
         prevCategories.map((category) =>
-          category._id === _id ? { ...category, ...categoryWithoutId } : category
+          category._id === _id
+            ? { ...category, ...categoryWithoutId }
+            : category
         )
       );
-  
+
       Swal.fire("Updated!", "Category has been updated.", "success");
     } catch (error) {
       Swal.fire("Error!", "Failed to update category.", "error");
     }
   };
-  
 
   const handleOpenModal = (category) => {
     setSelectedCategory(category);
@@ -74,6 +75,9 @@ const ManageCategory = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>Health || Manage category</title>
+      </Helmet>
       <h2 className="text-2xl font-semibold mb-4">Manage Categories</h2>
       <button
         onClick={() => setShowModal(true)}
