@@ -34,7 +34,7 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -48,7 +48,7 @@ const Login = () => {
       }
       axiosPublic.post('/users', userInfo)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
       })  
     });
   };

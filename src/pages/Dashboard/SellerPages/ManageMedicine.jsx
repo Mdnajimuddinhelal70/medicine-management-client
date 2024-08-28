@@ -29,7 +29,7 @@ const ManageMedicine = () => {
     queryKey: ['myMedicine'],
     queryFn: async () => {
       const res = await axiosSecure.get(`/myMedicine?sellerEmail=${user?.email}`);
-         console.log(res.data)
+        //  console.log(res.data)
           return res.data;
     }
   })

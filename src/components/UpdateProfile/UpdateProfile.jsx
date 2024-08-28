@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 
 const UpdateProfile = () => {
-  const { user, updateUserProfile, updateUserPassword } =
+  const { user, updateUserProfile } =
     useContext(AuthContext);
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [email, setEmail] = useState(user?.email || "");
@@ -41,10 +41,6 @@ const UpdateProfile = () => {
 
       if (email !== user?.email) {
         promises.push(user.updateEmail(email));
-      }
-
-      if (newPassword) {
-        promises.push(updateUserPassword(currentPassword, newPassword));
       }
 
       await Promise.all(promises);

@@ -18,7 +18,7 @@ const InvoicePage = () => {
   });
 
   useEffect(() => {
-    console.log("Payments Data:", payments);
+    // console.log("Payments Data:", payments);
   }, [payments]);
 
   const handlePrint = () => {

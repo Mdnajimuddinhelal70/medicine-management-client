@@ -17,7 +17,7 @@ const CategoryDetails = () => {
   const axiosSecure = useAxiosSecure();
    
   useEffect(() => {
-    fetch("http://localhost:8000/myMedicine")
+    fetch("https://healthcare-management-server.vercel.app/myMedicine")
       .then((res) => res.json())
       .then((data) => {
         const filtered = data.filter((item) => item.category === categoryName);

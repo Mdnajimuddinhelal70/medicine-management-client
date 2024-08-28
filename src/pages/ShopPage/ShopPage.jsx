@@ -19,9 +19,9 @@ const ShopPage = () => {
     queryKey: ["shop", searchQuery, sortOption], 
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/myMedicine?search=${searchQuery}&sort=${sortOption}`
+        `/myMedicineUp?search=${searchQuery}&sort=${sortOption}`
       );
-      console.log(res.data)
+      // console.log(res.data)
       return res.data;
     },
   });

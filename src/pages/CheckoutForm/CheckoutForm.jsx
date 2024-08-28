@@ -28,7 +28,7 @@ const CheckoutForm = () => {
     axiosSecure
       .post("/create-payment-intent", { price: totalPrice })
       .then((res) => {
-        console.log("Client Secret:", res.data.clientSecret);
+        // console.log("Client Secret:", res.data.clientSecret);
         setClientSecret(res.data.clientSecret);
       })
       .catch((err) => {
@@ -54,7 +54,7 @@ const CheckoutForm = () => {
     });
 
     if (error) {
-      console.log("payment error", error);
+      // console.log("payment error", error);
       setError(error.message);
       setIsProcessing(false);
       return;
@@ -73,13 +73,13 @@ const CheckoutForm = () => {
     });
 
     if (confirmError) {
-      console.log("confirm error", confirmError);
+      // console.log("confirm error", confirmError);
       setIsProcessing(false);
       return;
     }
 
     if (paymentIntent.status === 'succeeded') {
-      console.log('Transaction id', paymentIntent.id);
+      // console.log('Transaction id', paymentIntent.id);
       setTransactionId(paymentIntent.id);
 
       // প্রথম আইটেমের নাম ব্যবহার করছি, প্রয়োজনে পরিবর্তন করো

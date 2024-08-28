@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import goodImg from "../../assets/logo/good.png";
-
+import "./Navber.css";
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -22,29 +22,38 @@ const Navbar = () => {
 
   return (
     <nav className="navbar shadow-lg px-4 bg-gradient-to-r from-pink-400 via-indigo-500 to-yellow-400">
-     
       <div className="navbar-start flex items-center space-x-2">
         <img src={goodImg} alt="Logo" className="w-10 h-10" />
-        <Link to="/" className="text-2xl font-bold text-gray-800">
-          GOOD HEALTH
+        <Link to="/" className="text-2xl font-bold bg-gray-400 p-3 rounded-md">
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-lime-400 via-pink-900 to-blue-600 bg-clip-text text-transparent">
+          HEALTHCARE MANAGEMENT
+          </h1>
         </Link>
       </div>
 
-     
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal space-x-4">
           <li>
-            <Link to="/" className="text-gray-700 text-xl font-bold hover:text-gray-900">
+            <Link
+              to="/"
+              className="text-gray-700 text-xl font-bold hover:text-gray-900"
+            >
               Home
             </Link>
           </li>
           <li>
-            <Link to="/shopPage" className="text-gray-700 text-xl font-bold hover:text-gray-900">
+            <Link
+              to="/shopPage"
+              className="text-gray-700 text-xl font-bold hover:text-gray-900"
+            >
               Shop
             </Link>
           </li>
           <li>
-            <Link to="/carts" className="text-gray-700 text-xl font-bold hover:text-gray-900">
+            <Link
+              to="/carts"
+              className="text-gray-700 text-xl font-bold hover:text-gray-900"
+            >
               Cart
             </Link>
           </li>
@@ -52,7 +61,6 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end flex items-center space-x-4">
-      
         <label className="swap swap-rotate">
           <input
             onChange={handleToggle}
@@ -75,8 +83,6 @@ const Navbar = () => {
           </svg>
         </label>
 
-       
-     
         {user ? (
           <div className="dropdown dropdown-end">
             <button tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -115,7 +121,10 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <Link to="/login" className="btn btn-accent text-xl bg-yellow-700 hover:bg-yellow-800 border-0 text-white">
+          <Link
+            to="/login"
+            className="btn btn-accent text-xl bg-yellow-700 hover:bg-yellow-800 border-0 text-white"
+          >
             Join Us
           </Link>
         )}

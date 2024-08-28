@@ -47,7 +47,7 @@ const Register = () => {
 
                 axiosPublic.post("/users", userInfo).then((res) => {
                   if (res.data.insertedId) {
-                    console.log(res.data.insertedId)
+                    // console.log(res.data.insertedId)
                     navigate(from, { replace: true });
                     Swal.fire({
                       position: "top-end",

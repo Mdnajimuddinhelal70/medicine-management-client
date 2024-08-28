@@ -7,7 +7,7 @@ import UserMenu from "./Menu/UserMenu";
 
 const Dashboard = () => {
   const [role] = useRole();
-  console.log(role);
+  // console.log(role);
 
   return (
     <div className="flex h-screen">
