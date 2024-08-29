@@ -57,6 +57,7 @@ const UserHome = () => {
                   Transaction ID
                 </th>
                 <th className="px-4 py-3 text-left font-semibold">Status</th>
+                <th className="px-4 py-3 text-left font-semibold">Total Price</th>
               </tr>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@ const UserHome = () => {
                     idx % 2 === 0 ? "bg-white" : "bg-gray-100"
                   } hover:bg-gray-200`}
                 >
+                 
                   <td className="px-4 py-3 text-gray-800">
                     {payment.transactionId}
                   </td>
@@ -78,6 +80,9 @@ const UserHome = () => {
                     }`}
                   >
                     {payment.status}
+                  </td>
+                  <td className="px-4 py-3 text-gray-800">
+                    {payment.price}
                   </td>
                 </tr>
               ))}

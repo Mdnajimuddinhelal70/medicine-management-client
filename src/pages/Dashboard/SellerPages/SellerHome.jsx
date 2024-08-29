@@ -22,7 +22,7 @@ const AdminHome = () => {
         <title>Health || Seller Home</title>
       </Helmet>
       <h1 className="text-2xl font-bold mb-4">
-        Hi, Welcome {user?.displayName}
+       Here are your revenue total paid and total pending
       </h1>
       <div>
         <div className="stats shadow">

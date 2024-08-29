@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet-async";
 
 const Carts = () => {
   const [cart, refetch] = useCart();
-
   const totalPrice = cart.reduce((total, item) => {
     const price = parseFloat(item.price.replace("$", ""));
     const quantity = item.quantity || 0;
@@ -43,84 +42,107 @@ const Carts = () => {
       <Helmet>
         <title>Health || Cart</title>
       </Helmet>
-      <div className="h2-text-2xl text-xl mt-10 text-green-950 ml-10">Total Price: ${totalPrice.toFixed(2)}</div>
-      <div className="overflow-x-auto mx-10 my-10">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Image</th>
-              <th>Company Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cart.map((item, index) => (
-              <tr key={item._id}>
-                <th>{index + 1}</th>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src={item.image}
-                          alt="Avatar Tailwind CSS Component"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td>{item.company}</td>
-                <td>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(item._id, item.quantity - 1)
-                      }
-                      className="btn btn-ghost btn-xs"
-                      disabled={item.quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="text"
-                      value={item.quantity}
-                      readOnly
-                      className="input input-bordered input-xs w-16 text-center"
-                    />
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(item._id, item.quantity + 1)
-                      }
-                      className="btn btn-ghost btn-xs"
-                    >
-                      +
-                    </button>
-                  </div>
-                </td>
-                <td>{item.price}</td>
-                <th>
-                  <button
-                    onClick={() => handleClear(item._id)}
-                    className="btn btn-ghost btn-xs"
-                  >
-                    Clear
-                  </button>
-                </th>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-end m-4">
-          <button className="btn btn-outline text-xl font-bold"
-          disabled={cart.length === 0}
-          >
-            <Link to="/payment">CHECK-OUT</Link>
-          </button>
+
+      {cart.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-96">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Your cart is empty!
+          </h2>
+          <p className="text-gray-500">
+            You have not added any medicines to your cart yet. Browse our shop
+            and select the items you need.
+          </p>
+          <Link to="/shopPage">
+            <button className="mt-6 bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600">
+              Go to Shop
+            </button>
+          </Link>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="h2-text-2xl text-xl mt-10 text-green-950 ml-10">
+            Total Price: ${totalPrice.toFixed(2)}
+          </div>
+          <div className="overflow-x-auto mx-10 my-10">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>Company Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart.map((item, index) => (
+                  <tr key={item._id}>
+                    <th>{index + 1}</th>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle h-12 w-12">
+                            <img
+                              src={item.image}
+                              alt="Avatar Tailwind CSS Component"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{item.company}</td>
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() =>
+                            handleQuantityChange(item._id, item.quantity - 1)
+                          }
+                          className="btn btn-ghost btn-xs"
+                          disabled={item.quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <input
+                          type="text"
+                          value={item.quantity}
+                          readOnly
+                          className="input input-bordered input-xs w-16 text-center"
+                        />
+                        <button
+                          onClick={() =>
+                            handleQuantityChange(item._id, item.quantity + 1)
+                          }
+                          className="btn btn-ghost btn-xs"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td>{item.price}</td>
+                    <th>
+                      <button
+                        onClick={() => handleClear(item._id)}
+                        className="btn btn-ghost btn-xs"
+                      >
+                        Clear
+                      </button>
+                    </th>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex justify-end m-4">
+              <button
+                className="btn btn-outline text-xl font-bold"
+                disabled={cart.length === 0}
+              >
+                <Link to="/payment">CHECK-OUT</Link>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

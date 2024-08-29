@@ -73,7 +73,7 @@ const CheckoutForm = () => {
     });
 
     if (confirmError) {
-      // console.log("confirm error", confirmError);
+    
       setIsProcessing(false);
       return;
     }
@@ -82,13 +82,13 @@ const CheckoutForm = () => {
       // console.log('Transaction id', paymentIntent.id);
       setTransactionId(paymentIntent.id);
 
-      // প্রথম আইটেমের নাম ব্যবহার করছি, প্রয়োজনে পরিবর্তন করো
+      
       const firstItemName = cart.length > 0 ? cart[0].name : "Unknown Medicine";
 
       const payment = {
         buyerEmail: user.email,
         price: totalPrice,
-        name: firstItemName, // এখানে নাম যুক্ত করেছি
+        name: firstItemName, 
         transactionId: paymentIntent.id,
         date: new Date(),
         cartIds: cart.map(item => item._id),

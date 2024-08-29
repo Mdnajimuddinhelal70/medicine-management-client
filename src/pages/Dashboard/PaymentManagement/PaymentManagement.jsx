@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet-async";
 const PaymentManagement = () => {
   const axiosSecure = useAxiosSecure();
 
-  // Fetch payments data
   const {
     data: payments,
     isLoading,
@@ -41,14 +40,14 @@ const PaymentManagement = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .patch(`/payments/${id}`, { status: "paid" }) // Update payment status to "paid"
+          .patch(`/payments/${id}`, { status: "paid" }) 
           .then(() => {
             Swal.fire(
               "Updated!",
               "The payment has been marked as paid.",
               "success"
             );
-            refetch(); // Refresh data after successful update
+            refetch(); 
           })
           .catch((error) => {
             Swal.fire(
@@ -64,18 +63,18 @@ const PaymentManagement = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "Do you want to reject this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, reject it!",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
           .delete(`/payments/${id}`)
           .then(() => {
-            Swal.fire("Deleted!", "The payment has been deleted.", "success");
+            Swal.fire("Reject!", "The payment has been deleted.", "success");
             refetch();
           })
           .catch((error) => {
@@ -133,16 +132,16 @@ const PaymentManagement = () => {
                   {payment.status === "pending" && (
                     <button
                       onClick={() => handleAcceptPayment(payment._id)}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+                      className="btn btn-sm"
                     >
                       Accept Payment
                     </button>
                   )}
                   <button
                     onClick={() => handleDelete(payment._id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200"
+                    className="btn btn-sm bg-orange-300"
                   >
-                    Delete
+                    reject
                   </button>
                 </td>
               </tr>

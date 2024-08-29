@@ -4,17 +4,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 
 const AdminMenu = () => {
-  const {logOut} = useContext(AuthContext)
-  const navigate = useNavigate()
-   const handleLogout = () => {
-     logOut()
-     navigate('/login')
-   }
+  const { logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logOut();
+    navigate('/login');
+  };
+
   return (
     <>
       <li>
         <NavLink
-          to="/dashboard/home"
+          to="/dashboard"
           className={({ isActive }) =>
             `px-4 py-2 rounded-md flex items-center gap-2 ${
               isActive ? "bg-gray-500" : "hover:bg-gray-300"
@@ -101,8 +103,8 @@ const AdminMenu = () => {
             }`
           }
         >
-          <NavLink/>
-           Home
+          <FaHome />
+          Home
         </NavLink>
       </li>
       <li>
@@ -114,15 +116,16 @@ const AdminMenu = () => {
             }`
           }
         >
-          <NavLink />
+          <FaBoxOpen />
           Shop Page
         </NavLink>
       </li>
-      <div className="">
+      <div className="mt-4">
         <button
-        onClick={handleLogout}
-        className="bg-fuchsia-300-500 text-white px-4 py-2 rounded-md hover:bg-pink-950">
-         Log Out
+          onClick={handleLogout}
+          className="bg-fuchsia-500 text-white px-4 py-2 rounded-md hover:bg-pink-950"
+        >
+          Log Out
         </button>
       </div>
     </>

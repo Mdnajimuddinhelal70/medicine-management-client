@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import useRole from "../hooks/useRole";
 import AdminMenu from "./Menu/AdminMenu";
@@ -6,6 +6,7 @@ import SellerMenu from "./Menu/SellerMenu";
 import UserMenu from "./Menu/UserMenu";
 
 const Dashboard = () => {
+
   const [role] = useRole();
   // console.log(role);
 
@@ -23,6 +24,7 @@ const Dashboard = () => {
         </nav>
       </div>
       <div className="flex-1 p-6 bg-gray-100">
+      
         <Outlet />
       </div>
     </div>
