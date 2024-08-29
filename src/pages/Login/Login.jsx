@@ -40,20 +40,45 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     googleSignIn()
-    .then((result) => {
-      navigate(from, {replace: true})
-      const userInfo ={
-        name: result.user?.displayName,
-        email: result.user?.email,
-        role: 'user',     
-      }
-      axiosPublic.post('/users', userInfo)
-      .then(res => {
-        // console.log(res.data)
-      })  
-    });
+      .then((result) => {
+        navigate(from, { replace: true });
+  
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+          role: 'user',
+        };
+  
+        axiosPublic.post('/users', userInfo)
+          .then(res => {
+            
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Logged in successfully!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          })
+          .catch(error => {
+           
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong! Please try again.',
+            });
+          });
+      })
+      .catch(error => {
+       
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Google sign-in failed. Please try again.',
+        });
+      });
   };
- 
+  
 
   return (
     <div className="hero min-h-screen flex items-center justify-center">

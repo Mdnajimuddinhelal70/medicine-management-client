@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2"; 
 
 const ManageMedicine = () => {
   const { user } = useContext(AuthContext);
@@ -25,14 +26,13 @@ const ManageMedicine = () => {
   });
   const [imageFile, setImageFile] = useState(null);
 
-  const { data: medicines = [], isLoading, error} = useQuery({
+  const { data: medicines = [], isLoading, error } = useQuery({
     queryKey: ['myMedicine'],
     queryFn: async () => {
       const res = await axiosSecure.get(`/myMedicine?sellerEmail=${user?.email}`);
-        //  console.log(res.data)
-          return res.data;
+      return res.data;
     }
-  })
+  });
 
   const handleImageUpload = async () => {
     if (!imageFile) return;
@@ -68,8 +68,22 @@ const ManageMedicine = () => {
       await axiosSecure.post("/myMedicine", updatedFormData);
       queryClient.invalidateQueries(["myMedicine"]);
       setIsModalOpen(false);
+      
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Medicine added successfully!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error("Error adding medicine:", error);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong! Please try again.',
+      });
     }
   };
 
@@ -233,17 +247,17 @@ const ManageMedicine = () => {
               </div>
               <div className="mt-6 flex justify-end">
                 <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="bg-gray-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 transition-colors"
+                  type="submit"
+                  className="bg-green-600 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition-colors"
                 >
-                  Cancel
+                  Save Medicine
                 </button>
                 <button
-                  type="submit"
-                  className="bg-cyan-400 text-yellow-900 px-6 py-3 rounded-lg shadow-md hover:bg-cyan-500 transition-colors ml-4"
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="bg-red-600 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition-colors ml-4"
                 >
-                  Add Medicine
+                  Cancel
                 </button>
               </div>
             </form>

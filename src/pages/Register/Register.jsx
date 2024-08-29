@@ -76,7 +76,7 @@ const Register = () => {
       });
     }
   };
-  
+
   const handleGoogleLogin = () => {
     googleSignIn()
       .then((result) => {
@@ -85,21 +85,46 @@ const Register = () => {
           email: result.user?.email,
           role: "user",
         };
-        axiosPublic.post("/users", userInfo).then((res) => {
-          if (res.data.insertedId) {
-            navigate(from, { replace: true });
+  
+        axiosPublic.post("/users", userInfo)
+          .then((res) => {
+            console.log("API Response:", res.data);
+            if (res.data.insertedId || res.data.acknowledged) {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Google Sign-In Successful",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(from, { replace: true });
+            } else {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Google Sign-In Successful",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(from, { replace: true });
+            }
+          })
+          .catch((error) => {
+            console.error("User info post error:", error.message);
             Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Google Sign-In Successful",
-              showConfirmButton: false,
-              timer: 1500,
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong while saving user data.",
             });
-          }
-        });
+          });
       })
       .catch((error) => {
         console.error("Google Sign-In error:", error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Google Sign-In Failed",
+          text: "Please try again!",
+        });
       });
   };
   
