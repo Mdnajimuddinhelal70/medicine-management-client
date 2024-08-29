@@ -76,22 +76,33 @@ const Register = () => {
       });
     }
   };
-
+  
   const handleGoogleLogin = () => {
     googleSignIn()
-    .then((result) => {
-      navigate(from, {replace: true})
-      const userInfo = {
-        name: result.user?.displayName,
-        email: result.user?.email,
-      };
-      axiosPublic.post("/users", userInfo).then((res) => {
-        if (res.data.insertedId) {
-         
-        }
+      .then((result) => {
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+          role: "user",
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            navigate(from, { replace: true });
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Google Sign-In Successful",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Google Sign-In error:", error.message);
       });
-    });
   };
+  
 
   return (
     <div className="hero min-h-screen h-14 mt-16 mb-12 flex items-center justify-center">
