@@ -41,10 +41,7 @@ const SellerAdvertise = () => {
       return alert("Please select an image file!");
     }
 
-   
     const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
-    
-  
     const uploadFormData = new FormData();
     uploadFormData.append("image", imageFile);
 
@@ -59,7 +56,7 @@ const SellerAdvertise = () => {
 
         const newAdvertisement = {
           sellerEmail: user.email,
-          medicineImage: imageUrl, 
+          medicineImage: imageUrl,
           description: formData.description,
         };
 
@@ -73,7 +70,7 @@ const SellerAdvertise = () => {
 
   const handleInputChange = (e) => {
     if (e.target.name === "medicineImage") {
-      setImageFile(e.target.files[0]); 
+      setImageFile(e.target.files[0]);
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -85,12 +82,15 @@ const SellerAdvertise = () => {
         <title>Health || Seller Advertise</title>
       </Helmet>
       <h2 className="text-2xl font-semibold mb-4">Advertisements</h2>
-      <button onClick={() => setIsModalOpen(true)} className="btn btn-success">
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+      >
         Add Advertisement
       </button>
 
       {isLoading ? (
-        <p>Loading...</p>
+        <p className="text-center text-gray-500">Loading...</p>
       ) : (
         <div className="overflow-x-auto mt-10">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg">
@@ -158,7 +158,10 @@ const SellerAdvertise = () => {
                 ></textarea>
               </div>
               <div className="mt-4 flex justify-end">
-                <button type="submit" className="btn btn-outline">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                >
                   Add Advertisement
                 </button>
                 <button

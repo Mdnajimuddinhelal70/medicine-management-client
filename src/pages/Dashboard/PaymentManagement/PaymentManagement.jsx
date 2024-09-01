@@ -89,19 +89,21 @@ const PaymentManagement = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
+    <div className="p-4 sm:p-6 bg-white rounded-lg shadow-lg">
       <Helmet>
         <title>Health || Payment Management</title>
       </Helmet>
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">All Payments</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
+        All Payments
+      </h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
           <thead>
             <tr className="bg-gray-800 text-white text-left">
-              <th className="py-3 px-4 font-semibold">Email</th>
-              <th className="py-3 px-4 font-semibold">Amount</th>
-              <th className="py-3 px-4 font-semibold">Status</th>
-              <th className="py-3 px-4 font-semibold">Actions</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 font-semibold">Email</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 font-semibold">Amount</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 font-semibold">Status</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -112,14 +114,14 @@ const PaymentManagement = () => {
                   idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } border-b hover:bg-gray-100`}
               >
-                <td className="py-3 px-4 text-gray-700">
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-gray-700">
                   {payment.buyerEmail}
                 </td>
-                <td className="py-3 px-4 text-gray-700 font-semibold">
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-gray-700 font-semibold">
                   ${payment.price}
                 </td>
                 <td
-                  className={`py-3 px-4 font-semibold ${
+                  className={`py-2 sm:py-3 px-2 sm:px-4 font-semibold ${
                     payment.status === "paid"
                       ? "text-green-600"
                       : "text-red-600"
@@ -128,20 +130,20 @@ const PaymentManagement = () => {
                   {payment.status.charAt(0).toUpperCase() +
                     payment.status.slice(1)}
                 </td>
-                <td className="py-3 px-4 flex gap-4">
+                <td className="py-2 sm:py-3 px-2 sm:px-4 flex gap-2 sm:gap-4 flex-col sm:flex-row">
                   {payment.status === "pending" && (
                     <button
                       onClick={() => handleAcceptPayment(payment._id)}
-                      className="btn btn-sm"
+                      className="btn btn-sm w-full sm:w-auto"
                     >
                       Accept Payment
                     </button>
                   )}
                   <button
                     onClick={() => handleDelete(payment._id)}
-                    className="btn btn-sm bg-orange-300"
+                    className="btn btn-sm bg-orange-300 w-full sm:w-auto"
                   >
-                    reject
+                    Reject
                   </button>
                 </td>
               </tr>

@@ -100,6 +100,9 @@ const ManageMedicine = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      <Helmet>
+        <title>Health || Manage Medicines</title>
+      </Helmet>
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Manage Medicines</h2>
       <button
         onClick={() => setIsModalOpen(true)}
@@ -108,17 +111,18 @@ const ManageMedicine = () => {
         Add Medicine
       </button>
 
+      {/* Responsive Table */}
       <div className="mt-6 overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg shadow-md">
+        <table className="min-w-full bg-white rounded-lg shadow-md hidden md:table">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="py-3 px-4 text-left">Image</th>
-              <th className="py-3 px-4 text-left">Item Name</th>
-              <th className="py-3 px-4 text-left">Category</th>
-              <th className="py-3 px-4 text-left">Price</th>
-              <th className="py-3 px-4 text-left">Type</th>
-              <th className="py-3 px-4 text-left">Company</th>
-              <th className="py-3 px-4 text-left">Quantity</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Image</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Item Name</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Category</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Price</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Type</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Company</th>
+              <th className="py-3 px-2 sm:px-4 text-left">Quantity</th>
             </tr>
           </thead>
           <tbody>
@@ -127,30 +131,54 @@ const ManageMedicine = () => {
                 key={medicine._id}
                 className="border-b hover:bg-gray-100 transition-colors"
               >
-                <td className="py-3 px-4">
+                <td className="py-3 px-2 sm:px-4">
                   <img
                     src={medicine.image}
                     alt={medicine.name}
-                    className="w-16 h-8 object-cover rounded-md"
+                    className="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-md"
                   />
                 </td>
-                <td className="py-3 px-4">{medicine.name}</td>
-                <td className="py-3 px-4">{medicine.category}</td>
-                <td className="py-3 px-4">{medicine.price}</td>
-                <td className="py-3 px-4">{medicine.type}</td>
-                <td className="py-3 px-4">{medicine.company}</td>
-                <td className="py-3 px-4">{medicine.quantity}</td>
+                <td className="py-3 px-2 sm:px-4">{medicine.name}</td>
+                <td className="py-3 px-2 sm:px-4">{medicine.category}</td>
+                <td className="py-3 px-2 sm:px-4">{medicine.price}</td>
+                <td className="py-3 px-2 sm:px-4">{medicine.type}</td>
+                <td className="py-3 px-2 sm:px-4">{medicine.company}</td>
+                <td className="py-3 px-2 sm:px-4">{medicine.quantity}</td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        {/* Mobile View */}
+        <div className="block md:hidden">
+          {medicines.map((medicine) => (
+            <div
+              key={medicine._id}
+              className="bg-white shadow-md rounded-lg mb-4 p-4 border"
+            >
+              <div className="flex items-center mb-4">
+                <img
+                  src={medicine.image}
+                  alt={medicine.name}
+                  className="w-16 h-16 object-cover rounded-md"
+                />
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold">{medicine.name}</h3>
+                  <p className="text-gray-600">Category: {medicine.category}</p>
+                  <p className="text-gray-600">Price: {medicine.price}</p>
+                  <p className="text-gray-600">Type: {medicine.type}</p>
+                  <p className="text-gray-600">Company: {medicine.company}</p>
+                  <p className="text-gray-600">Quantity: {medicine.quantity}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
+      {/* Modal for Adding Medicine */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-          <Helmet>
-            <title>Health || Manage Medicines</title>
-          </Helmet>
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
             <h3 className="text-xl font-semibold mb-6 text-gray-800">
               Add New Medicine
@@ -223,7 +251,7 @@ const ManageMedicine = () => {
                 <input
                   type="number"
                   name="noOfMedicines"
-                  placeholder="No Of Medicines"
+                  placeholder="Number of Medicines"
                   value={formData.noOfMedicines}
                   onChange={handleInputChange}
                   className="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -245,17 +273,17 @@ const ManageMedicine = () => {
                   className="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="mt-6 flex justify-end">
+              <div className="flex justify-end mt-6">
                 <button
                   type="submit"
-                  className="bg-green-600 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition-colors"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
                 >
-                  Save Medicine
+                  Add Medicine
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="bg-red-600 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition-colors ml-4"
+                  className="ml-4 bg-gray-300 text-gray-800 px-6 py-2 rounded-lg shadow-md hover:bg-gray-400 transition-colors"
                 >
                   Cancel
                 </button>

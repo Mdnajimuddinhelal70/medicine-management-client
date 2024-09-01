@@ -6,18 +6,17 @@ const Category = () => {
   const [medicines, setMedicines] = useState([]);
 
   useEffect(() => {
-    fetch('https://healthcare-management-server.vercel.app/myMedicine')
-      .then(res => res.json())
-      .then(data => {
-       
+    fetch("https://healthcare-management-server.vercel.app/myMedicine")
+      .then((res) => res.json())
+      .then((data) => {
         const categoryData = data.reduce((acc, item) => {
-          const found = acc.find(cat => cat.category === item.category);
+          const found = acc.find((cat) => cat.category === item.category);
           if (found) {
             found.noOfMedicines += 1;
           } else {
             acc.push({
               ...item,
-              noOfMedicines: 1
+              noOfMedicines: 1,
             });
           }
           return acc;
@@ -26,20 +25,20 @@ const Category = () => {
       });
   }, []);
 
- 
   return (
-   <>
-   <Helmet>
+    <>
+      <Helmet>
         <title>Health || Cart</title>
-       
       </Helmet>
-    <h1 className="text-4xl font-bold ml-16 mt-16 text-fuchsia-900"> Explore Our Category-wise Medicine</h1>
-    <div className="container md:grid grid-cols-3 gap-4 mt-8 mb-10 mx-auto">
-      {medicines.map((item, index) => (
-        <CategoryItems key={index} item={item} />
-      ))}
-    </div>
-   </>
+      <h1 className="text-4xl font-bold ml-16 mt-16 text-fuchsia-900">
+        Explore Our Category-wise Medicine
+      </h1>
+      <div className="container md:grid grid-cols-3 gap-4 mt-8 mb-10 mx-auto">
+        {medicines.map((item, index) => (
+          <CategoryItems key={index} item={item} index={index} />
+        ))}
+      </div>
+    </>
   );
 };
 

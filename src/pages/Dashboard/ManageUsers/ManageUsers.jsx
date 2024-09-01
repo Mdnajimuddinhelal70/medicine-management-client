@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "./../../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { Dialog, Listbox } from "@headlessui/react";
@@ -26,7 +26,6 @@ const ManageUsers = () => {
       axiosSecure
         .patch(`/users/role/${selectedUser._id}`, { role: selectedRole })
         .then((res) => {
-          // console.log("Response:", res.data);
           if (res.data.modifiedCount > 0) {
             refetch();
             Swal.fire({
@@ -44,42 +43,43 @@ const ManageUsers = () => {
   };
 
   return (
-    <div>
+    <div className="p-4 md:p-6">
       <Helmet>
         <title>Health || Manage User</title>
       </Helmet>
-      <div className="flex justify-evenly my-4">
-        <h2 className="text-2xl">All users</h2>
-        <h2 className="text-2xl">Total users: {users.length}</h2>
+      <div className="flex flex-col md:flex-row md:justify-between my-4">
+        <h2 className="text-lg md:text-2xl font-semibold">All Users</h2>
+        <h2 className="text-base md:text-2xl font-medium">Total users: {users.length}</h2>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="table table-zebra">
-          <thead>
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+          <thead className="bg-gray-100">
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+              <th className="px-2 py-1 md:px-4 md:py-2 text-left text-xs md:text-sm font-medium text-gray-600">#</th>
+              <th className="px-2 py-1 md:px-4 md:py-2 text-left text-xs md:text-sm font-medium text-gray-600">Name</th>
+              <th className="px-2 py-1 md:px-4 md:py-2 text-left text-xs md:text-sm font-medium text-gray-600">Email</th>
+              <th className="px-2 py-1 md:px-4 md:py-2 text-left text-xs md:text-sm font-medium text-gray-600">Role</th>
+              <th className="px-2 py-1 md:px-4 md:py-2 text-left text-xs md:text-sm font-medium text-gray-600">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users?.map((user, index) => (
-              <tr key={user._id}>
-                <th>{index + 1}</th>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
+              <tr key={user._id} className="border-b">
+                <td className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm">{index + 1}</td>
+                <td className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm">{user.name}</td>
+                <td className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm">{user.email}</td>
+                <td className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm">{user.role}</td>
+                <td className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm">
                   <button
                     onClick={() => {
                       setSelectedUser(user);
                       setSelectedRole(user.role);
                     }}
-                    className="btn btn-md bg-slate-600 text-white"
+                    className="btn btn-md bg-slate-600 text-white flex items-center space-x-2"
                   >
-                    <FaEdit className="text-white text-xl" /> Update Role
+                    <FaEdit className="text-white text-base md:text-xl" /> 
+                    <span className="hidden md:inline">Update Role</span>
                   </button>
                 </td>
               </tr>
@@ -92,16 +92,16 @@ const ManageUsers = () => {
         <Dialog
           open={true}
           onClose={() => setSelectedUser(null)}
-          className="fixed inset-0 z-10 flex items-center justify-center"
+          className="fixed inset-0 z-10 flex items-center justify-center p-4"
         >
-          <div className="bg-white p-6 rounded shadow-lg max-w-md mx-auto">
-            <Dialog.Title className="text-lg font-bold">
+          <div className="bg-white p-6 rounded-md shadow-lg max-w-sm w-full">
+            <Dialog.Title className="text-lg font-semibold mb-4">
               Update Role for {selectedUser.name}
             </Dialog.Title>
             <div className="mt-4">
               <Listbox value={selectedRole} onChange={setSelectedRole}>
-                <Listbox.Button className="btn btn-outline w-full">
-                  {selectedRole}
+                <Listbox.Button className="btn btn-outline w-full text-left">
+                  {selectedRole || "Select Role"}
                 </Listbox.Button>
                 <Listbox.Options className="bg-white border rounded mt-2 shadow-lg">
                   {roles.map((role) => (

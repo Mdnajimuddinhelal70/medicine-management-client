@@ -20,7 +20,7 @@ const Carts = () => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Your item has cleared",
+          title: "Your item has been cleared",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -44,11 +44,11 @@ const Carts = () => {
       </Helmet>
 
       {cart.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-96">
+        <div className="flex flex-col items-center justify-center h-96 p-4">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
             Your cart is empty!
           </h2>
-          <p className="text-gray-500">
+          <p className="text-gray-500 mb-4">
             You have not added any medicines to your cart yet. Browse our shop
             and select the items you need.
           </p>
@@ -60,79 +60,134 @@ const Carts = () => {
         </div>
       ) : (
         <>
-          <div className="h2-text-2xl text-xl mt-10 text-green-950 ml-10">
+          <div className="text-xl font-semibold text-green-950 mt-10 mb-4 px-4">
             Total Price: ${totalPrice.toFixed(2)}
           </div>
-          <div className="overflow-x-auto mx-10 my-10">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Image</th>
-                  <th>Company Name</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cart.map((item, index) => (
-                  <tr key={item._id}>
-                    <th>{index + 1}</th>
-                    <td>
-                      <div className="flex items-center gap-3">
-                        <div className="avatar">
-                          <div className="mask mask-squircle h-12 w-12">
-                            <img
-                              src={item.image}
-                              alt="Avatar Tailwind CSS Component"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{item.company}</td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            handleQuantityChange(item._id, item.quantity - 1)
-                          }
-                          className="btn btn-ghost btn-xs"
-                          disabled={item.quantity <= 1}
-                        >
-                          -
-                        </button>
-                        <input
-                          type="text"
-                          value={item.quantity}
-                          readOnly
-                          className="input input-bordered input-xs w-16 text-center"
-                        />
-                        <button
-                          onClick={() =>
-                            handleQuantityChange(item._id, item.quantity + 1)
-                          }
-                          className="btn btn-ghost btn-xs"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
-                    <td>{item.price}</td>
-                    <th>
-                      <button
-                        onClick={() => handleClear(item._id)}
-                        className="btn btn-ghost btn-xs"
-                      >
-                        Clear
-                      </button>
-                    </th>
+          <div className="overflow-x-auto mx-4 md:mx-10 my-10">
+            {/* Desktop View */}
+            <div className="hidden md:block">
+              <table className="table-auto w-full bg-white border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="py-2 px-4 border-b">#</th>
+                    <th className="py-2 px-4 border-b">Image</th>
+                    <th className="py-2 px-4 border-b">Company Name</th>
+                    <th className="py-2 px-4 border-b">Quantity</th>
+                    <th className="py-2 px-4 border-b">Price</th>
+                    <th className="py-2 px-4 border-b">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex justify-end m-4">
+                </thead>
+                <tbody>
+                  {cart.map((item, index) => (
+                    <tr key={item._id} className="hover:bg-gray-50">
+                      <td className="py-2 px-4 border-b">{index + 1}</td>
+                      <td className="py-2 px-4 border-b">
+                        <div className="flex items-center">
+                          <img
+                            src={item.image || "https://via.placeholder.com/50"}
+                            alt={item.company}
+                            className="w-12 h-12 object-cover rounded-md"
+                          />
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border-b">{item.company}</td>
+                      <td className="py-2 px-4 border-b">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(item._id, item.quantity - 1)
+                            }
+                            className="btn btn-ghost btn-xs"
+                            disabled={item.quantity <= 1}
+                          >
+                            -
+                          </button>
+                          <input
+                            type="text"
+                            value={item.quantity}
+                            readOnly
+                            className="input input-bordered input-xs w-16 text-center"
+                          />
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(item._id, item.quantity + 1)
+                            }
+                            className="btn btn-ghost btn-xs"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border-b">{item.price}</td>
+                      <td className="py-2 px-4 border-b">
+                        <button
+                          onClick={() => handleClear(item._id)}
+                          className="btn btn-ghost btn-xs"
+                        >
+                          Clear
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile View */}
+            <div className="md:hidden">
+              {cart.map((item, index) => (
+                <div
+                  key={item._id}
+                  className="bg-white border border-gray-200 rounded-lg mb-4 p-4 shadow-md"
+                >
+                  <div className="flex items-center mb-4">
+                    <img
+                      src={item.image || "https://via.placeholder.com/150"}
+                      alt={item.company}
+                      className="w-16 h-16 object-cover rounded-md mr-4"
+                    />
+                    <div>
+                      <h2 className="text-lg font-bold">{item.company}</h2>
+                      <p className="text-gray-600">Price: {item.price}</p>
+                      <p className="text-gray-600">Quantity: {item.quantity}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item._id, item.quantity - 1)
+                      }
+                      className="btn btn-ghost btn-xs"
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="text"
+                      value={item.quantity}
+                      readOnly
+                      className="input input-bordered input-xs w-16 text-center"
+                    />
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item._id, item.quantity + 1)
+                      }
+                      className="btn btn-ghost btn-xs"
+                    >
+                      +
+                    </button>
+                    <button
+                      onClick={() => handleClear(item._id)}
+                      className="btn btn-ghost btn-xs"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end mt-4 px-4">
               <button
                 className="btn btn-outline text-xl font-bold"
                 disabled={cart.length === 0}
