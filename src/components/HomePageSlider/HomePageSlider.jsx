@@ -38,8 +38,15 @@ const HomePageSlider = () => {
     fade: true,
   };
 
-  if (isLoading) return <p>Loading...</p>;
-
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-semibold text-gray-600 animate-pulse">
+        <span className="loading loading-bars loading-lg"></span>
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="slider-container mb-8 mt-10">
       <Slider {...settings}>

@@ -76,6 +76,15 @@ const SellerAdvertise = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-semibold text-gray-600 animate-pulse">
+        <span className="loading loading-bars loading-lg"></span>
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="p-6">
       <Helmet>
@@ -90,7 +99,7 @@ const SellerAdvertise = () => {
       </button>
 
       {isLoading ? (
-        <p className="text-center text-gray-500">Loading...</p>
+        <span className="loading loading-bars loading-lg"></span>
       ) : (
         <div className="overflow-x-auto mt-10">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg">

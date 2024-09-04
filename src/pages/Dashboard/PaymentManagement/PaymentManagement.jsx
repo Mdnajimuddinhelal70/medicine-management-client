@@ -22,7 +22,7 @@ const PaymentManagement = () => {
     return (
       <div className="flex justify-center items-center h-64">
         <p className="text-lg font-semibold text-gray-600 animate-pulse">
-          Loading...
+        <span className="loading loading-bars loading-lg"></span>
         </p>
       </div>
     );

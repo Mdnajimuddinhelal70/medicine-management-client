@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import '../../../styles.css';
+import "../../../styles.css";
 
 const CategoryItems = ({ item, index }) => {
   const { category, image, noOfMedicines } = item;
+
+
 
   return (
     <Link to={`/categoryDetails/${category}`}>
@@ -22,7 +24,9 @@ const CategoryItems = ({ item, index }) => {
           </div>
         </figure>
         <div className="p-4">
-          <p className="text-gray-600 text-sm">Total Medicines: {noOfMedicines}</p>
+          <p className="text-gray-600 text-sm">
+            Total Medicines: {noOfMedicines}
+          </p>
         </div>
       </div>
     </Link>

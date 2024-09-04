@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 
 const ManageMedicine = () => {
   const { user } = useContext(AuthContext);
@@ -26,12 +26,18 @@ const ManageMedicine = () => {
   });
   const [imageFile, setImageFile] = useState(null);
 
-  const { data: medicines = [], isLoading, error } = useQuery({
-    queryKey: ['myMedicine'],
+  const {
+    data: medicines = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["myMedicine"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/myMedicine?sellerEmail=${user?.email}`);
+      const res = await axiosSecure.get(
+        `/myMedicine?sellerEmail=${user?.email}`
+      );
       return res.data;
-    }
+    },
   });
 
   const handleImageUpload = async () => {
@@ -68,21 +74,21 @@ const ManageMedicine = () => {
       await axiosSecure.post("/myMedicine", updatedFormData);
       queryClient.invalidateQueries(["myMedicine"]);
       setIsModalOpen(false);
-      
+
       Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Medicine added successfully!',
+        position: "top-end",
+        icon: "success",
+        title: "Medicine added successfully!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
     } catch (error) {
       console.error("Error adding medicine:", error);
 
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong! Please try again.',
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Please try again.",
       });
     }
   };
@@ -95,7 +101,15 @@ const ManageMedicine = () => {
     setImageFile(e.target.files[0]);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-semibold text-gray-600 animate-pulse">
+          <span className="loading loading-bars loading-lg"></span>
+        </p>
+      </div>
+    );
+  }
   if (error) return <div>Error loading medicines</div>;
 
   return (
@@ -103,7 +117,9 @@ const ManageMedicine = () => {
       <Helmet>
         <title>Health || Manage Medicines</title>
       </Helmet>
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Manage Medicines</h2>
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">
+        Manage Medicines
+      </h2>
       <button
         onClick={() => setIsModalOpen(true)}
         className="bg-cyan-400 text-yellow-900 font-bold px-6 py-3 rounded-lg shadow-md hover:bg-cyan-500 transition-colors"
@@ -111,18 +127,31 @@ const ManageMedicine = () => {
         Add Medicine
       </button>
 
-      {/* Responsive Table */}
       <div className="mt-6 overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md hidden md:table">
-          <thead className="bg-blue-600 text-white">
+          <thead className="bg-sky-400 text-white">
             <tr>
-              <th className="py-3 px-2 sm:px-4 text-left">Image</th>
-              <th className="py-3 px-2 sm:px-4 text-left">Item Name</th>
-              <th className="py-3 px-2 sm:px-4 text-left">Category</th>
-              <th className="py-3 px-2 sm:px-4 text-left">Price</th>
-              <th className="py-3 px-2 sm:px-4 text-left">Type</th>
-              <th className="py-3 px-2 sm:px-4 text-left">Company</th>
-              <th className="py-3 px-2 sm:px-4 text-left">Quantity</th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Image
+              </th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Item Name
+              </th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Category
+              </th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Price
+              </th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Type
+              </th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Company
+              </th>
+              <th className="py-3 px-2 sm:px-4 text-left text-xl font-bold">
+                Quantity
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -135,7 +164,7 @@ const ManageMedicine = () => {
                   <img
                     src={medicine.image}
                     alt={medicine.name}
-                    className="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-md"
+                    className="w-16 h-10 sm:w-24 sm:h-24 object-cover rounded-md"
                   />
                 </td>
                 <td className="py-3 px-2 sm:px-4">{medicine.name}</td>
@@ -149,7 +178,6 @@ const ManageMedicine = () => {
           </tbody>
         </table>
 
-        {/* Mobile View */}
         <div className="block md:hidden">
           {medicines.map((medicine) => (
             <div
@@ -176,7 +204,6 @@ const ManageMedicine = () => {
         </div>
       </div>
 
-      {/* Modal for Adding Medicine */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
