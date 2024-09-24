@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
     element: <Dashboard />,
     children: [
       {
-       index: true,
+       path: 'adminHome',
         element: <AdminHome />,
       },
       {
@@ -104,6 +104,8 @@ export const router = createBrowserRouter([
         path: "manageBanner",
         element: <ManageBanner />,
       },
+
+      
       // Seller list from here
       {
         path: "sellerHome",

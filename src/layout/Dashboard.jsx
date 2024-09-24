@@ -1,19 +1,41 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import useRole from "../hooks/useRole";
 import AdminMenu from "./Menu/AdminMenu";
 import SellerMenu from "./Menu/SellerMenu";
 import UserMenu from "./Menu/UserMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import { HiX } from "react-icons/hi";
 
 const Dashboard = () => {
-  const [role] = useRole();
+  const [role, isLoading] = useRole(); 
+  const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+  console.log("Current Role:", role);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+
+  useEffect(() => {
+    if(!isLoading){
+      if(role === 'admin'){
+        navigate('/dashboard/adminHome')
+      }else if(role === 'seller'){
+        navigate('/dashboard/sellerHome')
+      }else{
+        navigate('/dashboard/userHome')
+      }
+    }
+  },[role, isLoading, navigate])
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+
+
 
   return (
     <div className="flex h-screen overflow-hidden">

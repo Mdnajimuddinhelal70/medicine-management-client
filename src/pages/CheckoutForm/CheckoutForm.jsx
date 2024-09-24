@@ -14,7 +14,7 @@ const CheckoutForm = () => {
   const elements = useElements();
   const [error, setError] = useState("");
   const axiosSecure = useAxiosSecure();
-  const [cart, refetch] = useCart();
+  const [cart, isLoading, refetch] = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
@@ -116,6 +116,16 @@ const CheckoutForm = () => {
     }
     setIsProcessing(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-semibold text-gray-600 animate-pulse">
+          <span className="loading loading-bars loading-lg"></span>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

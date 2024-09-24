@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 const Carts = () => {
-  const [cart, refetch] = useCart();
+  const [cart, isLoading, refetch] = useCart();
   const totalPrice = cart.reduce((total, item) => {
     const price = parseFloat(item.price.replace("$", ""));
     const quantity = item.quantity || 0;
@@ -30,12 +30,23 @@ const Carts = () => {
   };
 
   const handleQuantityChange = (id, quantity) => {
-    axiosSecure.patch(`/carts/${id}`, { quantity }).then((res) => {
+    axiosSecure.patch(`/carts/${id}`, { quantity })
+    .then((res) => {
       if (res.data.modifiedCount > 0) {
         refetch();
       }
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-semibold text-gray-600 animate-pulse">
+          <span className="loading loading-bars loading-lg"></span>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <>
