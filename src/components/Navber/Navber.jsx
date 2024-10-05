@@ -58,6 +58,14 @@ const Navbar = () => {
               Cart
             </Link>
           </li>
+          <li>
+            <Link
+              to="/about"
+              className="text-gray-700 text-lg md:text-xl font-bold hover:text-gray-900"
+            >
+              About Us
+            </Link>
+          </li>
         </ul>
       </div>
 

@@ -17,6 +17,7 @@
     "axios": "^1.7.5",
     "file-saver": "^2.0.5",
     "firebase": "^10.13.0",
+    "framer-motion": "^11.11.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "localforage": "^1.10.0",

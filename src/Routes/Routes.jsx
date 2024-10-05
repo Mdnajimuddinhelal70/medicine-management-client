@@ -23,6 +23,7 @@ import SellerAdvertise from "../pages/Dashboard/SellerPages/SellerAdvertise";
 import UserHome from "../pages/UserHome/UserHome";
 import NotFound from "../components/NotFound/NotFound";
 import PrivateRoute from "./PrivateRoute";
+import About from "../pages/About/About";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       {
         path: "/invoice",
         element: <InvoicePage />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
     ],
   },
