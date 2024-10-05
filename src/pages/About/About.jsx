@@ -1,5 +1,6 @@
 import AboutBanner from "./AboutBanner";
 import AbtDetails from "./AbtDetails";
+import Customer from "./Customer";
 
 
 const About = () => {
@@ -7,6 +8,7 @@ const About = () => {
         <div>
             <AboutBanner />
             <AbtDetails />
+            <Customer />
         </div>
     );
 };

@@ -39,7 +39,7 @@ const Banner = () => {
             transition={{ duration: 2 }}
             style={{ color: "#fff", fontSize: "3rem", fontWeight: "bold" }}
          >
-           <span className=" text-orange-600"> Welcome to Our Medicine Management System!</span>
+           <span className=" text-sky-900 -mt-60 animate-pulse w-20"> Welcome to Our Medicine Management System!</span>
          </motion.h1>
       </motion.div>
    );
