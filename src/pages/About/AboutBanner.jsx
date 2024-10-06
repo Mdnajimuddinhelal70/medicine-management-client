@@ -1,7 +1,6 @@
-
 import { motion } from "framer-motion";
-import fishImg from '../../assets/mBanner/fish.png'
-
+import fishImg from '../../assets/mBanner/kalam.jpg'
+import { Link } from "react-router-dom";
 
 const Banner = () => {
    return (
@@ -39,8 +38,36 @@ const Banner = () => {
             transition={{ duration: 2 }}
             style={{ color: "#fff", fontSize: "3rem", fontWeight: "bold" }}
          >
-           <span className=" text-sky-900 -mt-60 animate-pulse w-20"> Welcome to Our Medicine Management System!</span>
+            Quality Medicines, Delivered to You
          </motion.h1>
+
+         <motion.p
+            animate={{ opacity: [0, 1], y: [20, 0] }} 
+            transition={{ delay: 1, duration: 1.5 }}
+            style={{ color: "#fff", fontSize: "1.5rem", marginTop: "20px" }}
+         >
+            Ensuring the best healthcare with trusted medicines, always at your service.
+         </motion.p>
+         
+         <motion.button
+            animate={{ scale: [0.8, 1], opacity: [0, 1] }}
+            transition={{ delay: 1.5, duration: 1 }}
+            style={{ 
+               marginTop: "30px", 
+               padding: "10px 20px", 
+               fontSize: "1rem", 
+               backgroundColor: "#00bfa5", 
+               color: "#fff", 
+               border: "none", 
+               borderRadius: "5px",
+               cursor: "pointer"
+            }}
+            whileHover={{ scale: 1.1 }}  
+         >
+            <Link to="/">
+            Explore Medicines
+            </Link>
+         </motion.button>
       </motion.div>
    );
 };

@@ -2,27 +2,31 @@ import { useState } from "react";
 import customarData from "../../../public/customar.json";
 
 const Customer = () => {
-  const [visibleCount, setVisibleCount] = useState(3); // প্রথমে ৩টি কার্ড দেখাবে
-  const [expanded, setExpanded] = useState(false); // ট্র্যাক করার জন্য যে 'More' ক্লিক হয়েছে কিনা
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [expanded, setExpanded] = useState(false);
 
   const handleShowMore = () => {
-    setVisibleCount(customarData.length); // সব কার্ড দেখাবে
-    setExpanded(true); // স্টেট আপডেট
+    setVisibleCount(customarData.length);
+    setExpanded(true);
   };
 
   const handleShowLess = () => {
-    setVisibleCount(3); // আবার প্রথম ৩টি কার্ড দেখাবে
-    setExpanded(false); // স্টেট আপডেট
+    setVisibleCount(3);
+    setExpanded(false);
   };
 
   return (
     <div>
-      <h1 className="text-center text-5xl font-extrabold font-sans text-cyan-400">What Our Client Say.</h1>
+      <h1 className="text-center text-5xl font-extrabold font-sans text-cyan-400">
+        What Our Client Say.
+      </h1>
       <div className="container md:grid grid-cols-3 gap-3 p-10 my-12 rounded-md bg-cyan-400 mx-auto">
-        {customarData.slice(0, visibleCount)?.map((item) => (
+        {customarData.slice(0, visibleCount)?.map((item, index) => (
           <div
             key={item.name}
-            className="flex max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 my-3 transform transition-transform duration-500 hover:scale-105 hover:shadow-2xl"
+            // অ্যানিমেশনের জন্য ডান এবং বাম দিক নির্ধারণ
+            className={`flex max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 my-3 transform transition-transform duration-500 hover:scale-105 hover:shadow-2xl 
+              ${index % 2 === 0 ? 'animate-slideInLeft' : 'animate-slideInRight'}`}
           >
             <div
               className="w-1/3 bg-cover bg-center transition-all duration-500 h-full"
@@ -59,12 +63,11 @@ const Customer = () => {
                   </svg>
                 ))}
               </div>
-
             </div>
           </div>
         ))}
       </div>
-      
+
       <div className="text-center my-5">
         {!expanded && visibleCount < customarData.length && (
           <button
