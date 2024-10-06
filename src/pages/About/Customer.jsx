@@ -24,7 +24,7 @@ const Customer = () => {
         {customarData.slice(0, visibleCount)?.map((item, index) => (
           <div
             key={item.name}
-            // অ্যানিমেশনের জন্য ডান এবং বাম দিক নির্ধারণ
+          
             className={`flex max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 my-3 transform transition-transform duration-500 hover:scale-105 hover:shadow-2xl 
               ${index % 2 === 0 ? 'animate-slideInLeft' : 'animate-slideInRight'}`}
           >

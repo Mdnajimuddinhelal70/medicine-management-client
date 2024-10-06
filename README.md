@@ -9,7 +9,7 @@ Welcome to the **HealthCare Management System**! This platform is designed to ef
 
 ## Live Site URL
 
-Access the live website here: [HealthCare Management System](https://b9-a12-project.web.app/)
+Access the live website here: [HealthCare Management System](https://b9-a12-project.web.app)
 
 ## Features
 
