@@ -28,7 +28,10 @@
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
+<<<<<<< HEAD
     "react-hook-form": "^7.63.0",
+=======
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.3.0",
     "react-modal": "^3.16.1",

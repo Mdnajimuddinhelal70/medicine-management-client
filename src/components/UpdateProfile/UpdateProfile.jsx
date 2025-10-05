@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import axios from "axios";
 import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../../Providers/AuthProvider";
+=======
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
 
 const UpdateProfile = () => {
   const { user, updateUserProfile } =
@@ -22,7 +29,13 @@ const UpdateProfile = () => {
         formData.append("image", photoFile);
 
         const { data } = await axios.post(
+<<<<<<< HEAD
           `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+=======
+          `https://api.imgbb.com/1/upload?key=${
+            import.meta.env.VITE_IMGBB_API_KEY
+          }`,
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
           formData
         );
 
@@ -102,7 +115,11 @@ const UpdateProfile = () => {
           className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Update Profile
+<<<<<<< HEAD
       </button>
+=======
+        </button>
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
         {error && <p className="text-red-500 text-center">{error}</p>}
       </form>
     </div>

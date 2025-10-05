@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import useAuth from "../../hooks/useAuth";
 
 const SocialLogin = () => {
@@ -45,3 +46,16 @@ const SocialLogin = () => {
 };
 
 export default SocialLogin;
+=======
+
+
+const SocialLogin = () => {
+    return (
+        <div>
+            
+        </div>
+    );
+};
+
+export default SocialLogin;
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c

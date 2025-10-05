@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import { createContext, useEffect, useState } from "react";
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -8,7 +12,10 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+<<<<<<< HEAD
 import { createContext, useEffect, useState } from "react";
+=======
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
 
 import app from "../firebase/firebase.config";
 import useAxiosPublic from './../hooks/useAxiosPublic';
@@ -25,8 +32,16 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
+<<<<<<< HEAD
   const updateUserProfile = profileInfo => {
     return updateProfile(auth.currentUser, profileInfo);
+=======
+  const updateUserProfile = (name, photo) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    });
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
   };
 
   const loginUser = (email, password) => {

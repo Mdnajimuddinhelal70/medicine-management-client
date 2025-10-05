@@ -1,15 +1,27 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useContext, useEffect, useState } from "react";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useCart from "../../hooks/useCart";
 import { AuthContext } from "../../Providers/AuthProvider";
+=======
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
+import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const { user } = useContext(AuthContext);
+<<<<<<< HEAD
   const [transactionId, setTransactionId] = useState("");
+=======
+  const [transactionId, setTransactionId] = useState('');
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
   const [clientSecret, setClientSecret] = useState("");
   const elements = useElements();
   const [error, setError] = useState("");
@@ -28,7 +40,11 @@ const CheckoutForm = () => {
     axiosSecure
       .post("/create-payment-intent", { price: totalPrice })
       .then((res) => {
+<<<<<<< HEAD
         console.log("Client Secret:", res.data.clientSecret);
+=======
+        // console.log("Client Secret:", res.data.clientSecret);
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
         setClientSecret(res.data.clientSecret);
       })
       .catch((err) => {
@@ -62,6 +78,7 @@ const CheckoutForm = () => {
       setError("");
     }
 
+<<<<<<< HEAD
     const { paymentIntent, error: confirmError } =
       await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -74,19 +91,42 @@ const CheckoutForm = () => {
       });
 
     if (confirmError) {
+=======
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          email: user?.email || "anonymous",
+          name: user?.displayName || "anonymous",
+        },
+      },
+    });
+
+    if (confirmError) {
+    
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
       setIsProcessing(false);
       return;
     }
 
+<<<<<<< HEAD
     if (paymentIntent.status === "succeeded") {
       // console.log('Transaction id', paymentIntent.id);
       setTransactionId(paymentIntent.id);
 
+=======
+    if (paymentIntent.status === 'succeeded') {
+      // console.log('Transaction id', paymentIntent.id);
+      setTransactionId(paymentIntent.id);
+
+      
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
       const firstItemName = cart.length > 0 ? cart[0].name : "Unknown Medicine";
 
       const payment = {
         buyerEmail: user.email,
         price: totalPrice,
+<<<<<<< HEAD
         name: firstItemName,
         transactionId: paymentIntent.id,
         date: new Date(),
@@ -98,6 +138,19 @@ const CheckoutForm = () => {
       try {
         const res = await axiosSecure.post("/payments", payment);
         console.log("Payment saved", res.data);
+=======
+        name: firstItemName, 
+        transactionId: paymentIntent.id,
+        date: new Date(),
+        cartIds: cart.map(item => item._id),
+        myMdcnIds: cart.map(item => item.medicineId),
+        status: 'pending'
+      };      
+
+      try {
+        const res = await axiosSecure.post('/payments', payment);
+        console.log('Payment saved', res.data);
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
         refetch();
         if (res.data.paymentResult.insertedId) {
           Swal.fire({
@@ -105,12 +158,21 @@ const CheckoutForm = () => {
             icon: "success",
             title: "Thanks, your payment was successful",
             showConfirmButton: false,
+<<<<<<< HEAD
             timer: 1500,
           });
           navigate("/invoice");
         }
       } catch (error) {
         console.error("Error saving payment:", error);
+=======
+            timer: 1500
+          });
+          navigate('/invoice');
+        }
+      } catch (error) {
+        console.error('Error saving payment:', error);
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
       }
     }
     setIsProcessing(false);
@@ -163,9 +225,13 @@ const CheckoutForm = () => {
           {isProcessing ? "Processing..." : "Pay Now"}
         </button>
         <p className="text-red-700">{error}</p>
+<<<<<<< HEAD
         {transactionId && (
           <p className="text-green-600">Your transaction ID: {transactionId}</p>
         )}
+=======
+        {transactionId && <p className="text-green-600">Your transaction ID: {transactionId}</p>}
+>>>>>>> 476d3e1138ce68e51f91bfc76883b93e11f10e5c
       </form>
     </div>
   );
